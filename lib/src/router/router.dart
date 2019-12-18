@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluwe/src/helpers/helpers.dart';
 import 'package:fluwe/src/options/options.dart';
+import 'package:fluwe/src/common/fluwe.dart';
+
+
 
 /// -----------------------------
 /// 
@@ -64,15 +67,19 @@ class Router {
   ///   result: '12345689'
   /// );
   /// ```
-  static Future navigateBack({int delta: 1, result}) async{
+  static Future navigateBack({int delta: 1, result, isLoading = false}) async{
+    /// loading表示
+    if(isLoading == true && Fluwe.isLoading == false) {
+      return false;
+    }
     /// 循环delta次返回
     for (var i = 0; i < delta; i++) {
       if(navigatorKey.currentState.canPop()) {
         navigatorKey.currentState.pop(delta == i + 1 ? result : null);
-      } else {
-        return false;
       }
     }
+    /// loading表示
+    Fluwe.isLoading = false;
     return true;
   }
 
@@ -96,6 +103,9 @@ class Router {
   /// );
   /// ```
   static Future navigateTo({Widget page, RouterType type = RouterType.navigateTo, String url, Object params = const {}}) async{
+    /// loading表示(防止loading乱占用导航问题关闭他)
+    navigateBack(isLoading: true);
+
     if(page != null) {
       Route pushPage = createRoute(page);
 

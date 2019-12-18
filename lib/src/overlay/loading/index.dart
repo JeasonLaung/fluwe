@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'package:fluwe/src/common/fluwe.dart';
+
 import '../utils.dart';
 import 'loading.dart';
 /// 打开loading弹出层
+Timer _timer;
 Future showLoading({
   String msg, 
   Duration duration,
@@ -9,27 +12,26 @@ Future showLoading({
   Function onCancel, 
   /// 可以返回
   canBack = true}) async{
-
-  /// 已经返回
-  bool backed = false;
+  _timer?.cancel();
+  Fluwe.isLoading = true;
   createOverlayEntry(
     willPopCallback: () async{
-      if (canBack && backed == false) {
-        backed = true;
-        if (onCancel is Function) {
-          await onCancel();
-        }
-        return true;
-      } else {
-        return false;
+      if (onCancel is Function) {
+        onCancel();
       }
+      if(canBack == false) {
+        return false;
+      } else {
+        Fluwe.isLoading = false;
+        return true;
+      }
+      
     },
     child: LoadingWidget()
   );
-
   if(duration is Duration) {
-    Timer(duration, () {
-      if (backed == false) {
+    _timer = Timer(duration, () {
+      if (Fluwe.isLoading) {
         closeLoading();
       }
     });
@@ -39,6 +41,6 @@ Future showLoading({
 
 /// 关闭loading弹出层
 Future closeLoading() async{
-  Router.navigateBack();
+  Router.navigateBack(isLoading: true);
 }
 

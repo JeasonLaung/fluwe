@@ -1,5 +1,7 @@
 // import 'dart:async';
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:fluwe/fluwe.dart';
 import '../../widgets/widgets.dart';
@@ -12,6 +14,7 @@ class TestOverlayPage extends StatefulWidget {
 
 class _TestOverlayPageState extends State<TestOverlayPage> {
   List data = [];
+  Timer _timer;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +39,11 @@ class _TestOverlayPageState extends State<TestOverlayPage> {
           }),
           WeCell('等待',
             onTap: () {
+              _timer?.cancel();
               showLoading(duration: Duration(seconds: 3));
+              _timer = Timer(Duration(seconds: 2), () {
+                closeLoading();
+              });
               
           }),
           WeCell('操作栏',

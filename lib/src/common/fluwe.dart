@@ -50,6 +50,11 @@ class Fluwe {
   /// 设备唯一标识
   static String deviceToken;
 
+
+  /// 是否为loading状态
+  static bool isLoading = false;
+
+
   ///
   /// 缓存
   ///
