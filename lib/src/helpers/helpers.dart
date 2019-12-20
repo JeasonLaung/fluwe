@@ -22,7 +22,7 @@ Future showToast(
     Color textColor}
   ) async{
   Fluttertoast.cancel();
-  return await Fluttertoast.showToast(
+  return Fluttertoast.showToast(
     msg:msg, 
     toastLength: toastLength, 
     timeInSecForIos: timeInSecForIos, 

@@ -104,7 +104,7 @@ class Router {
   /// ```
   static Future navigateTo({Widget page, RouterType type = RouterType.navigateTo, String url, Object params = const {}}) async{
     /// loading表示(防止loading乱占用导航问题关闭他)
-    navigateBack(isLoading: true);
+    await navigateBack(isLoading: true);
 
     if(page != null) {
       Route pushPage = createRoute(page);
