@@ -17,6 +17,9 @@ dependencies:
   # 本地缓存
   shared_preferences: ^0.5.4+8
 
+  # 权限调起
+  permission_handler: ^4.0.0
+
   # 调起原生分享
   share: ^0.6.3+4
 
