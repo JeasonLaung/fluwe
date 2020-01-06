@@ -1,5 +1,6 @@
 library fluwe;
 
+export 'package:permission_handler/permission_handler.dart';
 
 
 export './src/common/fluwe.dart';

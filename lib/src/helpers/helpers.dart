@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fluwe/src/common/fluwe.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,7 +23,7 @@ Future showToast(
     Color textColor}
   ) async{
   Fluttertoast.cancel();
-  return await Fluttertoast.showToast(
+  return Fluttertoast.showToast(
     msg:msg, 
     toastLength: toastLength, 
     timeInSecForIos: timeInSecForIos, 
@@ -75,10 +76,18 @@ Future chooseImage({ChooseImageType type: ChooseImageType.photo}) async{
   ImageSource source;
   switch (type) {
     case ChooseImageType.photo:
-      source = ImageSource.gallery;
+      if (Platform.isIOS) {
+        requestPermission(PermissionGroup.photos).then((data) {
+          source = ImageSource.gallery;
+        });
+      } else {
+        source = ImageSource.gallery;
+      }
       break;
     default:
-      source = ImageSource.camera;
+      requestPermission(PermissionGroup.camera).then((data) {
+        source = ImageSource.camera;
+      });
   }
   File file = await ImagePicker.pickImage(source: source);
   if (file == null) {
@@ -172,3 +181,37 @@ Future share(String text, {String subject, Rect sharePositonOrigin}) async{
 /// 缓存
 ///
 SharedPreferences cache = Fluwe.cache;
+
+
+
+///
+/// APP权限调起
+///
+Future<bool> openSetting() async{
+  return await PermissionHandler().openAppSettings();
+}
+
+///
+/// 处理权限(保证打开状态)
+///
+Future<bool> requestPermission(PermissionGroup permission, {Function fail}) async{
+  PermissionHandler permissionHandler = PermissionHandler();
+  /// 检测授权
+  PermissionStatus status = await permissionHandler.checkPermissionStatus(permission);
+  /// denied（苹果已经授权的话会直接返回这个denied）   granted为（ios第一次授权成功 或 安卓授权打开状态返回）
+  if (status == PermissionStatus.denied || status == PermissionStatus.granted) {
+    return true;
+  } else {
+    Map<PermissionGroup, PermissionStatus> statuss = await permissionHandler.requestPermissions([permission]);
+    /// 第一次授权
+    if (statuss[permission] == PermissionStatus.granted) {
+      return true;
+    } else {
+      if (fail is Function) {
+        fail();
+      }
+      throw false;
+    }
+  }
+}
+

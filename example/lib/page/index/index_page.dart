@@ -7,6 +7,7 @@ import 'test_launch_page.dart';
 import 'test_overlay_page.dart';
 import 'test_router_page.dart';
 import 'test_view_page.dart';
+import 'test_auth_page.dart';
 
 class IndexPage extends StatefulWidget {
   @override
@@ -45,6 +46,9 @@ class _IndexPageState extends State<IndexPage> {
                     },),
                     WeCell('布局', onTap: () {
                       Router.navigateTo(page: TestViewPage());
+                    },),
+                    WeCell('权限', onTap: () {
+                      Router.navigateTo(page: TestAuthPage());
                     },),
                   ],
                 ),
