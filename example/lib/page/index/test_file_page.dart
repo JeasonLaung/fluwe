@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:fluwe/fluwe.dart';
+// import 'package:multi_image_picker/multi_image_picker.dart';
 import '../../widgets/widgets.dart';
 
 /// 文件操作页面
@@ -11,7 +12,7 @@ class TestFilePage extends StatelessWidget {
       appBar: AppBar(title: Text('文件操作页面'),),
       body: WeCellGroup(
         children: <WeCell>[
-          WeCell('选择图片',
+          WeCell('选择图片（【官方】只能单选）',
             onTap: () {
               chooseImage().then((file) {
                 showModal(
@@ -44,6 +45,15 @@ class TestFilePage extends StatelessWidget {
                   )
                 );
               });
+          }),
+
+          WeCell('打开设置',
+            onTap: () {
+              openSetting();
+          }),
+
+          WeCell('打开设置',
+            onTap: () {
           }),
         ],
       ),
