@@ -172,7 +172,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.8.0+1"
-<<<<<<< HEAD
   permission_handler:
     dependency: transitive
     description:
@@ -180,15 +179,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "4.0.0"
-=======
-  petitparser:
-    dependency: transitive
-    description:
-      name: petitparser
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.4.0"
->>>>>>> 908cc2e9da9f117814dd778b185922982577674b
   platform:
     dependency: transitive
     description:
@@ -327,23 +317,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.8"
-<<<<<<< HEAD
-=======
-  webview_flutter:
-    dependency: transitive
-    description:
-      name: webview_flutter
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.3.17"
-  xml:
-    dependency: transitive
-    description:
-      name: xml
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "3.5.0"
->>>>>>> 908cc2e9da9f117814dd778b185922982577674b
 sdks:
   dart: ">=2.5.0 <3.0.0"
   flutter: ">=1.9.1+hotfix.5 <2.0.0"
