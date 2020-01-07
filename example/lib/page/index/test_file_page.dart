@@ -1,4 +1,6 @@
 
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:fluwe/fluwe.dart';
 // import 'package:multi_image_picker/multi_image_picker.dart';
@@ -12,7 +14,12 @@ class TestFilePage extends StatelessWidget {
       appBar: AppBar(title: Text('文件操作页面'),),
       body: WeCellGroup(
         children: <WeCell>[
-          WeCell('选择图片（【官方】只能单选）',
+          WeCell('打开设置',
+            onTap: () {
+              openSetting();
+          }),
+
+          WeCell('选择图片（官方）',
             onTap: () {
               chooseImage().then((file) {
                 showModal(
@@ -30,7 +37,7 @@ class TestFilePage extends StatelessWidget {
           }),
 
 
-          WeCell('拍摄图片',
+          WeCell('拍摄图片（官方）',
             onTap: () {
               chooseImage(type: ChooseImageType.camera).then((file) {
                 showModal(
@@ -47,13 +54,58 @@ class TestFilePage extends StatelessWidget {
               });
           }),
 
-          WeCell('打开设置',
-            onTap: () {
-              openSetting();
-          }),
+          
 
-          WeCell('打开设置',
+          WeCell('选择图片 + 压缩图片',
             onTap: () {
+              chooseImage(compress: true).then((file) async{
+                 showModal(
+                  child: Column(
+                    children: [
+                      Text('现大小：${await file.length()}节字'),
+                      Image.file(file),
+                    ]
+                  ),
+                  onCancel: () async{},
+                  onConfirm: () async{
+                  }
+                );
+              });
+              // 生成二进制不保存
+              // chooseImage().then((file) async{
+              //   Uint8List res = await compressImage(file);
+              //   showModal(
+              //     child: Column(
+              //       children: [
+              //         Text('原大小：${await file.length()}节字'),
+              //         Text('现大小：${res.length}节字'),
+              //         Image.memory(res),
+              //       ]
+              //     ),
+              //     onCancel: () async{},
+              //     onConfirm: () async{
+              //     }
+              //   );
+              // });
+          }),
+          WeCell('拍摄图片 + 压缩图片',
+            onTap: () {
+              // 生成二进制不保存
+              chooseImage(type: ChooseImageType.camera).then((file) async{
+                Uint8List res = await compressImage(file);
+                showModal(
+                  child: Column(
+                    children: [
+                      Text('原大小：${await file.length()}节字'),
+                      Text('现大小：${res.length}节字'),
+                      Image.memory(res),
+                    ]
+                  ),
+                  onCancel: () async{},
+                  onConfirm: () async{
+                  }
+                );
+              });
           }),
         ],
       ),

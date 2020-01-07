@@ -1,10 +1,13 @@
 import 'dart:io';
+import 'dart:typed_data';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:fluwe/fluwe.dart';
 import 'package:fluwe/src/common/fluwe.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
@@ -73,7 +76,11 @@ enum ChooseImageType{
   camera,
   photo
 }
-Future chooseImage({ChooseImageType type: ChooseImageType.photo}) async{
+Future<File> chooseImage({
+  ChooseImageType type = ChooseImageType.photo, 
+  /// 是否压缩
+  bool compress = false
+}) async{
   ImageSource source;
   switch (type) {
     case ChooseImageType.photo:
@@ -91,6 +98,9 @@ Future chooseImage({ChooseImageType type: ChooseImageType.photo}) async{
     if (file == null) {
       throw '没有选图片';
     } else {
+      if (compress) {
+        file = await compressImage(file, output: CompressOutputType.file);
+      }
       return file;
     }
   // });
@@ -124,9 +134,10 @@ Future openApp({@required OpenAppType appName}) async{
 ///
 /// 打开外部网址
 ///
-Future openBrower({@required url}) async{
+Future<bool> openBrower({@required url}) async{
   if (await canLaunch(url.toString())) {
     await launch(url.toString());
+    return true;
   } else {
     throw 'Could not launch $url.toString()';
   }
@@ -247,17 +258,74 @@ Future<bool> requestPermission(permission, {Function fail}) async{
 }
 
 
-// ///
-// /// 压缩图片
-// ///
-// Future compressImage(File file) async{
-//   var result = await FlutterImageCompress.compressWithFile(
-//     file.absolute.path,
-//     minWidth: 1024,
-//     minHeight: 1024,
-//     quality: 70,
-//   );
-//   print(file.lengthSync());
-//   print(result.length);
-//   return result;
-// }
+
+
+enum CompressOutputType{
+  /// 二进制文件,（返回）
+  uint8List,
+  /// 文件
+  file
+}
+///
+/// 压缩图片
+/// 相关连接 [https://pub.flutter-io.cn/packages/flutter_image_compress]
+/// 
+/// 1.二进制图片显示 
+/// ```
+/// Image.memory(Uint8List bytes)
+/// ```
+/// 2.本地图片显示
+/// ```
+///Image.file(File file)
+/// ```
+/// 3.网络图片显示
+/// ```
+///Image.network(String path)
+/// ```
+Future compressImage(File file, {
+  /// 输出类型
+  CompressOutputType output = CompressOutputType.uint8List,
+  /// 压缩质量
+  int quality = 70,
+  /// 最小高度
+  int minHeight = 1080,
+  /// 最小宽度
+  int minWidth = 1920,
+  /// 转角
+  int rotate = 0,
+  CompressFormat format = CompressFormat.jpeg
+}) async{
+  showLoading(canBack: false);
+  var result;
+  switch (output) {
+    case CompressOutputType.uint8List:
+      result = await FlutterImageCompress.compressWithFile(
+        file.absolute.path,
+        minWidth: minWidth,
+        minHeight: minHeight,
+        quality: quality,
+        rotate: rotate,
+        format: format
+      );
+      result = Uint8List.fromList(result);
+      break;
+    default:
+      String ext = file.absolute.path.split('.').last;
+      /// 应用自身空间
+      Directory dir = await getApplicationDocumentsDirectory();
+      /// 保存地址
+      String savePath = '${dir.path}/${DateTime.now().millisecondsSinceEpoch}.$ext';
+      result = await FlutterImageCompress.compressAndGetFile(
+        file.absolute.path,
+        savePath,
+        minWidth: minWidth,
+        minHeight: minHeight,
+        quality: quality,
+        rotate: rotate,
+        format: format
+      );
+      break;
+  }
+  closeLoading();
+  return result;
+}

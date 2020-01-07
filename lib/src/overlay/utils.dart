@@ -66,6 +66,7 @@ createOverlayEntry({
               fontSize: 16,
               fontWeight: FontWeight.normal,
               decoration: TextDecoration.none,
+              color: Colors.black
             )
           ),
           onWillPop: willPopCallback ?? () async=> true,

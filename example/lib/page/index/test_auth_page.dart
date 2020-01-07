@@ -26,11 +26,18 @@ class TestAuthPage extends StatelessWidget {
             openSetting();
           },),
           WeCell('位置权限',onTap: () {
-            // requestPermission(PermissionGroup.locationAlways);
-            // requestPermission(Permiss)
+            requestPermission([PermissionGroup.locationAlways]).then((data) {
+              showToast('获取成功');
+            }).catchError((data) {
+              showToast('获取失败');
+            });
           },),
-          WeCell('打开权限',onTap: () {
-            openSetting();
+          WeCell('通讯录权限',onTap: () {
+            requestPermission([PermissionGroup.contacts]).then((data) {
+              showToast('获取成功');
+            }).catchError((data) {
+              showToast('获取失败');
+            });
           },),
           WeCell('打开权限',onTap: () {
             openSetting();
