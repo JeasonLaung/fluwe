@@ -2,7 +2,26 @@ import 'package:example/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:fluwe/fluwe.dart';
 
+class TextAuthPage extends StatefulWidget {
+  @override
+  _TextAuthPageState createState() => _TextAuthPageState();
+}
+
+class _TextAuthPageState extends State<TextAuthPage> {
+  @override
+  Widget build(BuildContext context) {
+    '123'.startsWith(pattern)
+    AssetImage()
+    Image()
+    Image.asset('', 
+    height: )
+    return Container(
+    );
+  }
+}
+
 class TestAuthPage extends StatelessWidget {
+  TextEditingController a = TextEditingController()
   @override
   Widget build(BuildContext context) {
     return Scaffold(
