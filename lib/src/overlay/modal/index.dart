@@ -3,7 +3,7 @@ import 'dart:async';
 import '../utils.dart';
 import 'modal.dart';
 
-Future showModal({String title,String content,Widget child,Function onConfirm, Function onCancel}) async{
+Future showModal({String title = '提示',String content = '',Widget child,Function onConfirm, Function onCancel}) async{
   createOverlayEntry(
     willPopCallback: () async{
       if (onCancel is Function) {

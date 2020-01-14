@@ -1,83 +1,141 @@
 
 import 'package:flutter/material.dart';
+import 'package:fluwe/src/helpers/helpers.dart';
 
 class ModalWidget extends StatelessWidget {
-  final Widget child;
   final String title;
   final String content;
   final Function onConfirm;
   final Function onCancel;
-  ModalWidget({this.child, this.content,this.title, this.onCancel,this.onConfirm});
+  final Widget child;
+  const ModalWidget({this.child, this.content = '', this.title = '提示', this.onConfirm, this.onCancel});
+
+
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            color: Colors.white,
-            width: MediaQuery.of(context).size.width * 0.8,
-            alignment: Alignment.center,
-            child: child == null
-              ? Container(
-                  padding: EdgeInsets.symmetric(vertical: 20.0,horizontal: 20.0),
-                  child: Column(
-                    children: <Widget>[
-                      title != null
-                      ? Text('$title', style: TextStyle(
-                        decoration: TextDecoration.none,
-                        color: Color(0xff333333),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16.0
-                      ))
-                      : Container(),
-                      title != null && content != null  
-                      ? SizedBox(height: 20.0,)
-                      : Container(),
-                      content != null
-                      ? Text('$content', style: TextStyle(
-                        decoration: TextDecoration.none,
-                        color: Color(0xff666666),
-                        fontWeight: FontWeight.normal,
-                        fontSize: 13.0
-                      ))
-                      : Container()
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(rpx(13)),
+        child: Container(
+            width: rpx(670),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              // border: Border.all(),
+              borderRadius: BorderRadius.circular(rpx(13))
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(height: rpx(67),),
 
-                    ],
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: rpx(50)),
+                  child: Text(title, style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: rpx(37)
+                  )),
+                ),
+                
+                SizedBox(height: rpx(40),),
+
+                child != null
+                ? child
+                :(content != '' 
+                  ? Container(
+                    padding: EdgeInsets.symmetric(horizontal: rpx(50)),
+                    child: Text(content, style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: rpx(37),
+                      color: Color(0xff808080)
+                    ))
                   )
-                )
-              : child
+                  : Container()),
+
+
+
+                SizedBox(height: rpx(67),),
+
+
+                buildButtons()
+                // RaisedButton(
+                //   child: Text(title),
+                //   onPressed: () {
+                //     showModal();
+                //   },
+                // ),
+            ]
           ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.8,
-            child: Material(
-            child: Row(
-            children: <Widget>[
-              Expanded(
-                child: InkWell(
-                  child: Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.all(20),
-                    child: Text('取消'),
-                  ),
-                  onTap: onCancel,
+        ),
+      )
+    );
+  }
+
+
+  Widget buildButtons() {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: Material(
+            color: Colors.white,
+            child: InkWell(
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    top: BorderSide(
+                      width: rpx(1),
+                      color: Color(0xffe5e5e5)
+                    ),
+                    right: BorderSide(
+                      width: rpx(1),
+                      color: Color(0xffe5e5e5)
+                    ),
+                  )
                 ),
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(20),
+                child: Text('取消', style: TextStyle(
+                  fontSize: rpx(37),
+                  fontWeight: FontWeight.bold
+                ),),
               ),
-              Expanded(
-                child: InkWell(
-                  child: Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.all(20),
-                    child: Text('确定', style: TextStyle(color: Colors.green),),
-                  ),
-                  onTap: onConfirm,
-                ),
-              ),
-            ],
-          ))
+              onTap: () {
+                if (onCancel is Function) {
+                  return onCancel();
+                }
+              },
+            ),
           )
-        ],
-      ),
+        ),
+        Expanded(
+          child: Material(
+            color: Colors.white,
+            child: InkWell(
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    top: BorderSide(
+                      width: rpx(1),
+                      color: Color(0xffe5e5e5)
+                    )
+                  )
+                ),
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(20),
+                child: Text('确定', style: TextStyle(
+                  color: Color(0xff576c94),
+                  fontSize: rpx(37),
+                  fontWeight: FontWeight.bold
+                ),),
+              ),
+              onTap: () {
+                if (onCancel is Function) {
+                  return onCancel();
+                }
+              },
+            )
+          ),
+        ),
+      ],
     );
   }
 }

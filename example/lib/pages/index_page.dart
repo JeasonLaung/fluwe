@@ -19,9 +19,11 @@ class _IndexPageState extends State<IndexPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            ModalWidget(
-              title: '是否确定？',
-              content: '水水水水水水水水水水水水水水水水水水水杀杀杀水水水水水水水水水水水水水水水水水水水杀杀杀水水水水水水水水水水水水水水水水水水水杀杀杀水水水水水水水水水水水水水水水水水水水杀杀杀',
+            RaisedButton(
+              child: Text('123'),
+              onPressed: () {
+                showModal();
+              },
             )
           ],
         )
@@ -35,7 +37,8 @@ class ModalWidget extends StatelessWidget {
   final String content;
   final Function onConfirm;
   final Function onCancel;
-  const ModalWidget({this.content = '', this.title = '提示', this.onConfirm, this.onCancel});
+  final Widget child;
+  const ModalWidget({this.child, this.content = '', this.title = '提示', this.onConfirm, this.onCancel});
 
 
   @override
@@ -63,16 +66,18 @@ class ModalWidget extends StatelessWidget {
               
               SizedBox(height: rpx(40),),
 
-              content != '' 
-              ? Container(
-                padding: EdgeInsets.symmetric(horizontal: rpx(50)),
-                child: Text(content, style: TextStyle(
-                  fontWeight: FontWeight.normal,
-                  fontSize: rpx(37),
-                  color: Color(0xff808080)
-                ))
-              )
-              : Container(),
+              child != null
+              ? child
+              :(content != '' 
+                ? Container(
+                  padding: EdgeInsets.symmetric(horizontal: rpx(50)),
+                  child: Text(content, style: TextStyle(
+                    fontWeight: FontWeight.normal,
+                    fontSize: rpx(37),
+                    color: Color(0xff808080)
+                  ))
+                )
+                : Container()),
 
 
 
