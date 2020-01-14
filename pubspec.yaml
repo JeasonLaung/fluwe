@@ -12,51 +12,51 @@ dependencies:
     sdk: flutter
 
   # 请求
-  dio: ^3.0.8
+  dio: ^3.0.4
 
   # 本地缓存
-  shared_preferences: ^0.5.6
+  shared_preferences: ^0.5.4+8
 
   # 权限调起
-  permission_handler: ^4.1.0
+  permission_handler: ^4.0.0
 
   # 调起原生分享
-  share: ^0.6.3+5
+  share: ^0.6.3+4
 
   # flutter 吐司
   fluttertoast: ^3.1.3
 
   # 读取文件位置
-  path_provider: ^1.5.1
+  path_provider: ^1.5.0
 
   # 设备信息
-  device_info: ^0.4.1+4
+  device_info: ^0.4.1+3
 
 
   # 启动器（打电话，启动网页）
-  url_launcher: ^5.4.1
+  url_launcher: ^5.2.5
 
   # 全局状态管理
   # provider: ^3.1.0+1
 
   # app信息
-  package_info: ^0.4.0+13
+  package_info: ^0.4.0+11
 
   # 安卓拉活机制（使用失败不知道为啥）
   # android_alarm_manager: ^0.4.4+3
 
   # 图片缓存1.9
-  # cached_network_image: ^1.1.3
+  cached_network_image: ^1.1.3
 
   # 图片缓存1.12+
-  cached_network_image: ^2.0.0
+  # cached_network_image: ^2.0.0
 
 
   # 选择图片实现，包括拍照的
-  image_picker: ^0.6.3
+  image_picker: ^0.6.1+11
 
   # 压缩图片
-  flutter_image_compress: ^0.6.5
+  flutter_image_compress: ^0.6.3
 
 
   # 嵌入浏览器
