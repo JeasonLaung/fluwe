@@ -23,7 +23,7 @@ OverlayState get overlayCurrent {
 /// ----------------------
 
 class OverlayStateStates{
-  static bool lock = true;
+  static bool lock = false;
 }
 
 
@@ -39,7 +39,7 @@ createOverlayEntry({
   Color backgroundColor = const Color(0x80000000)
 }) {
   OverlayEntry overlayEntry;
-  OverlayStateStates.lock = false;
+  OverlayStateStates.lock = true;
   if (hasWillPop == false) {
     overlayEntry = new OverlayEntry(builder: (context) {
       return DefaultTextStyle(
@@ -72,7 +72,7 @@ createOverlayEntry({
       }
     )).then((val) {
       /// 互锁
-      OverlayStateStates.lock = true;
+      OverlayStateStates.lock = false;
     });
   }
 }

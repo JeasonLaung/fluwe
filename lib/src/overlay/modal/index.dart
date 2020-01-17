@@ -33,8 +33,8 @@ Future showModal({String title = '提示',String content = '',Widget child,Funct
 }
 
 Future closeModal() async{
-  if (OverlayStateStates.lock == false) {
-    OverlayStateStates.lock = true;
+  if (OverlayStateStates.lock == true) {
+    OverlayStateStates.lock = false;
     Router.navigateBack();
   }
 }
