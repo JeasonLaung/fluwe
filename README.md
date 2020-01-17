@@ -27,3 +27,8 @@ class MyApp extends StatelessWidget {
   }
 }
 ```
+
+
+安卓配置
+### flutter_downloader
+https://github.com/fluttercommunity/flutter_downloader/blob/master/android_integration_note.md

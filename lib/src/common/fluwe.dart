@@ -9,6 +9,7 @@ import 'package:device_info/device_info.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../router/router.dart';
@@ -61,8 +62,16 @@ class Fluwe {
   static SharedPreferences cache;
 
   static Future init({@required List<RouteOptions> routesConfig, ConfigOptions fluweConfig}) async{
+    /// 路由配置
     Router.configs = routesConfig;
     config = fluweConfig ?? ConfigOptions();
+
+
+    /// 下载器初始化
+    await FlutterDownloader.initialize();
+
+
+
     /// 
     /// 包信息
     /// 

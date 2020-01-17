@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:fluwe/fluwe.dart';
-import './pages/index_page.dart';
-void main() async{
+import 'page/index/index_page.dart';
+import 'routes/routes.dart';
+
+main() async{
   WidgetsFlutterBinding.ensureInitialized();
+
   await Fluwe.init(
-    routesConfig: [],
-    
+    routesConfig: Routes.config
   );
   runApp(MyApp());
 }
@@ -17,9 +19,8 @@ class MyApp extends StatelessWidget {
       navigatorKey: Router.navigatorKey,
       onGenerateRoute: Router.onGenerateRoute,
       home: FluweApp(
-        child: IndexPage()
+        child: IndexPage(),
       )
     );
   }
 }
-

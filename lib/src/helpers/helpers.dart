@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -78,11 +79,16 @@ enum ChooseImageType{
   camera,
   photo
 }
+bool chooseImageBlock = false;
 Future<File> chooseImage({
   ChooseImageType type = ChooseImageType.photo, 
   /// 是否压缩
   bool compress = false
 }) async{
+  if (chooseImageBlock == true) {
+    throw '不能同时打开两次选择文件';
+  }
+  chooseImageBlock = true;
   ImageSource source;
   switch (type) {
     case ChooseImageType.photo:
@@ -96,15 +102,16 @@ Future<File> chooseImage({
   }
   // await requestPermission(PermissionGroup.photos).then((data) async{
 
-    File file = await ImagePicker.pickImage(source: source);
-    if (file == null) {
-      throw '没有选图片';
-    } else {
-      if (compress) {
-        file = await compressImage(file, output: CompressOutputType.file);
-      }
-      return file;
+  File file = await ImagePicker.pickImage(source: source);
+  chooseImageBlock = false;
+  if (file == null) {
+    throw '没有选图片';
+  } else {
+    if (compress) {
+      file = await compressImage(file, output: CompressOutputType.file);
     }
+    return file;
+  }
   // });
 }
 
@@ -330,4 +337,134 @@ Future compressImage(File file, {
   }
   closeLoading();
   return result;
+}
+
+
+// 获取存储路径
+Future<String> _findLocalPath() async {
+  // 因为Apple没有外置存储，所以第一步我们需要先对所在平台进行判断
+  // 如果是android，使用getExternalStorageDirectory
+  // 如果是iOS，使用getApplicationSupportDirectory
+  final directory = Platform.isAndroid
+      ? await getExternalStorageDirectory()
+      : await getApplicationSupportDirectory();
+  return directory.path;
+}
+
+// 下载申请权限
+Future<bool> _downloadCheckPermission() async {
+  // 先对所在平台进行判断
+  if (Platform.isAndroid) {
+    PermissionStatus permission = await PermissionHandler()
+        .checkPermissionStatus(PermissionGroup.storage);
+    if (permission != PermissionStatus.granted) {
+      Map<PermissionGroup, PermissionStatus> permissions =
+          await PermissionHandler()
+              .requestPermissions([PermissionGroup.storage]);
+      if (permissions[PermissionGroup.storage] == PermissionStatus.granted) {
+        return true;
+      }
+    } else {
+      return true;
+    }
+  } else {
+    return true;
+  }
+  return false;
+}
+
+
+/// 下载文件
+/// 
+Future<String> downloadFile({
+  @required String url, 
+  Function success,
+  Function fail,
+  Map<String, String> headers = const {},
+  String savePath}) async{
+
+  if(await _downloadCheckPermission()) {
+    String path = savePath ?? cache.getString('SAVE_PATH');
+    if (empty(path)) {
+      path = await _findLocalPath();
+    }
+    final _taskId = await FlutterDownloader.enqueue(
+      url: url,
+      headers: headers,
+      savedDir: path,
+      showNotification: true, // show download progress in status bar (for Android)
+      openFileFromNotification: true, // click on notification to open downloaded file (for Android)
+    );
+
+
+    // _registerCallback(String taskId, DownloadTaskStatus status, int progress) {
+    //   if (taskId == _taskId) {
+    //     if (status == DownloadTaskStatus.complete) {
+    //       if (success is Function) {
+    //         success();
+    //       }
+    //     } else if(status == DownloadTaskStatus.canceled || status == DownloadTaskStatus.failed || status == DownloadTaskStatus.undefined){
+    //       if (fail is Function) {
+    //         fail();
+    //       }
+    //     }
+    //   }
+    // }
+    // FlutterDownloader.registerCallback(_registerCallback);
+
+    return _taskId;
+  } else {
+    throw '文件读写权限没获取';
+  }
+}
+
+Future<bool> cancelDownload({String taskId, bool all: false}) async{
+  if (all) {
+    await FlutterDownloader.cancelAll();
+    return true;
+  } else {
+    await FlutterDownloader.cancel(taskId:taskId);
+    return true;
+  }
+  
+}
+
+/// 可通过sql搜索下载列表历史
+/// ```
+/// CREATE TABLE `task` (
+/// 	`id`	INTEGER PRIMARY KEY AUTOINCREMENT,
+/// 	`task_id`	VARCHAR ( 256 ),
+/// 	`url`	TEXT,
+/// 	`status`	INTEGER DEFAULT 0,
+/// 	`progress`	INTEGER DEFAULT 0,
+/// 	`file_name`	TEXT,
+/// 	`saved_dir`	TEXT,
+/// 	`resumable`	TINYINT DEFAULT 0,
+/// 	`headers`	TEXT,
+/// 	`show_notification`	TINYINT DEFAULT 0,
+/// 	`open_file_from_notification`	TINYINT DEFAULT 0,
+/// 	`time_created`	INTEGER DEFAULT 0
+/// );
+/// ```
+
+Future<List<DownloadTask>> getDownloadFileList({String query}) {
+  if (query is String) {
+    return FlutterDownloader.loadTasksWithRawQuery(query: query);
+  }
+  return FlutterDownloader.loadTasks();
+}
+
+
+/// 空
+bool empty(obj) {
+  if (obj == null || obj == false || obj == '') {
+    return true;
+  }
+  if (obj is List && obj.length == 0) {
+    return true;
+  }
+  if (obj is Map && obj.keys.length == 0) {
+    return true;
+  }
+  return false;
 }

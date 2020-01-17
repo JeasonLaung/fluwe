@@ -5,10 +5,20 @@ import 'package:fluwe/src/helpers/helpers.dart';
 class ModalWidget extends StatelessWidget {
   final String title;
   final String content;
+  final String confirmText;
+  final String cancelText;
   final Function onConfirm;
   final Function onCancel;
   final Widget child;
-  const ModalWidget({this.child, this.content = '', this.title = '提示', this.onConfirm, this.onCancel});
+  const ModalWidget({
+    this.child, 
+    this.content = '', 
+    this.title = '提示', 
+    this.onConfirm, 
+    this.onCancel,
+    this.cancelText = '取消',
+    this.confirmText = '确定'
+  });
 
 
   @override
@@ -41,13 +51,22 @@ class ModalWidget extends StatelessWidget {
                 child != null
                 ? child
                 :(content != '' 
-                  ? Container(
-                    padding: EdgeInsets.symmetric(horizontal: rpx(50)),
-                    child: Text(content, style: TextStyle(
-                      fontWeight: FontWeight.normal,
-                      fontSize: rpx(37),
-                      color: Color(0xff808080)
-                    ))
+                  ? LimitedBox(
+                    maxHeight: vh(60),
+                    child: Container(
+                      decoration: BoxDecoration(
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: rpx(50)),
+                      child: Scrollbar(
+                        child: SingleChildScrollView(
+                          child:  Text(content, style: TextStyle(
+                            fontWeight: FontWeight.normal,
+                            fontSize: rpx(37),
+                            color: Color(0xff808080)
+                          ))
+                        )
+                      )
+                    )
                   )
                   : Container()),
 
@@ -93,7 +112,7 @@ class ModalWidget extends StatelessWidget {
                 ),
                 alignment: Alignment.center,
                 padding: EdgeInsets.all(20),
-                child: Text('取消', style: TextStyle(
+                child: Text(cancelText, style: TextStyle(
                   fontSize: rpx(37),
                   fontWeight: FontWeight.bold
                 ),),
@@ -121,15 +140,15 @@ class ModalWidget extends StatelessWidget {
                 ),
                 alignment: Alignment.center,
                 padding: EdgeInsets.all(20),
-                child: Text('确定', style: TextStyle(
+                child: Text(confirmText, style: TextStyle(
                   color: Color(0xff576c94),
                   fontSize: rpx(37),
                   fontWeight: FontWeight.bold
                 ),),
               ),
               onTap: () {
-                if (onCancel is Function) {
-                  return onCancel();
+                if (onConfirm is Function) {
+                  return onConfirm();
                 }
               },
             )
