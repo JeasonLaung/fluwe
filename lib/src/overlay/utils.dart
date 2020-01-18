@@ -86,7 +86,7 @@ class FluweDialogRoute<T> extends PopupRoute<T> {
     bool barrierDismissible = true,
     String barrierLabel,
     Color barrierColor = const Color(0x80000000),
-    Duration transitionDuration = const Duration(milliseconds: 200),
+    Duration transitionDuration = const Duration(milliseconds: 50),
     RouteTransitionsBuilder transitionBuilder,
     RouteSettings settings,
   }) : assert(barrierDismissible != null),
@@ -134,7 +134,7 @@ class FluweDialogRoute<T> extends PopupRoute<T> {
       return FadeTransition(
           opacity: CurvedAnimation(
             parent: animation,
-            curve: Curves.linear,
+            curve: Curves.easeIn,
           ),
           child: child);
     } // Some default transition
