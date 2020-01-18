@@ -42,7 +42,7 @@ dependencies:
   # video_player: ^0.10.5+1
   
   # 网页
-  webview_flutter: ^0.3.19+4
+  # webview_flutter: ^0.3.19+4
   # 下载
   flutter_downloader: ^1.4.0
 
