@@ -11,6 +11,7 @@ import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import '../overlay/loading/index.dart';
 import '../common/fluwe.dart';
@@ -418,6 +419,10 @@ Future<String> downloadFile({
   }
 }
 
+
+///
+/// 取消下载
+///
 Future<bool> cancelDownload({String taskId, bool all: false}) async{
   if (all) {
     await FlutterDownloader.cancelAll();
@@ -426,9 +431,29 @@ Future<bool> cancelDownload({String taskId, bool all: false}) async{
     await FlutterDownloader.cancel(taskId:taskId);
     return true;
   }
-  
 }
 
+
+///
+/// 缓存图片
+///
+CachedNetworkImage cacheImage(url,{BoxFit fit,Alignment alignment}) {
+  return CachedNetworkImage(
+    imageUrl: url,
+    imageBuilder: (context, imageProvider) => Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+            alignment: alignment ?? Alignment.center,
+            image: imageProvider,
+            fit: fit ?? BoxFit.cover,
+            colorFilter:
+            ColorFilter.mode(Colors.transparent, BlendMode.colorBurn)),
+      ),
+    ),
+    placeholder: (context, url) => CircularProgressIndicator(),
+    errorWidget: (context, url, error) => Icon(Icons.error),
+  );
+}
 /// 可通过sql搜索下载列表历史
 /// ```
 /// CREATE TABLE `task` (
