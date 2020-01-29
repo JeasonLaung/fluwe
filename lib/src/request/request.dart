@@ -68,7 +68,6 @@ class Request{
     if(!empty(signture)) {
       headers[Fluwe.config.signName] = signture;
     }
-
     /// 初始化url
     if (url.startsWith(r'http(s)?://')) {
     } else {
@@ -76,48 +75,46 @@ class Request{
     }
 
 
-    if (dio == null) {
-      dio = Dio(BaseOptions(
-        headers: headers,
-        contentType: contentType,
-        connectTimeout: connectTimeout ?? Fluwe.config.connectTimeout,
-        receiveTimeout: receiveTimeout ?? Fluwe.config.receiveTimeout
-      ));
-      dio.interceptors.add(InterceptorsWrapper(
-        onRequest:(RequestOptions options) {
-          if (loading) {
-            showLoading(onCancel: clear());
-          }
-          return options;
-        },
-        onError:(DioError err) {
-          // showRequestToast('$url 请求异常，原因：${err.error}');
-          if(err.error is String) {
-            if (_isDebug) {
-              showRequestToast('$url 请求返回失败，原因：${err.error}');
-            } else {
-              showRequestToast(err.error);
-            }
+    dio = Dio(BaseOptions(
+      headers: headers,
+      contentType: contentType,
+      connectTimeout: connectTimeout ?? Fluwe.config.connectTimeout,
+      receiveTimeout: receiveTimeout ?? Fluwe.config.receiveTimeout
+    ));
+    dio.interceptors.add(InterceptorsWrapper(
+      onRequest:(RequestOptions options) {
+        if (loading) {
+          showLoading(onCancel: clear());
+        }
+        return options;
+      },
+      onError:(DioError err) {
+        // showRequestToast('$url 请求异常，原因：${err.error}');
+        if(err.error is String) {
+          if (_isDebug) {
+            showRequestToast('$url 请求返回失败，原因：${err.error}');
           } else {
-            if (_isDebug) {
-              showRequestToast('$url 请求返回失败，原因：${err.error}');
-            }
+            showRequestToast(err.error);
           }
-          return dio.reject('$url 请求异常，原因：${err.error}');
-        },
-        onResponse:(Response response) async{
-          if (response.data is Map) {
-            if (response.data['status'] == 1) {
-              return response;
-            } else {
-              return dio.reject(response.data['msg'] ?? '请求失败，没有返回任何信息');
-            }
+        } else {
+          if (_isDebug) {
+            showRequestToast('$url 请求返回失败，原因：${err.error}');
+          }
+        }
+        return dio.reject('$url 请求异常，原因：${err.error}');
+      },
+      onResponse:(Response response) async{
+        if (response.data is Map) {
+          if (response.data['status'] == 1) {
+            return response;
           } else {
-            return dio.reject('$url 请求异常，原因：返回结果不为json类型，输出${response.data}');
+            return dio.reject(response.data['msg'] ?? '请求失败，没有返回任何信息');
           }
-        },
-      ));
-    }
+        } else {
+          return dio.reject('$url 请求异常，原因：返回结果不为json类型，输出${response.data}');
+        }
+      },
+    ));
     
     
     switch (method) {
