@@ -28,6 +28,13 @@ enum RouterType {
   navigateTo
 }
 
+///
+/// 过度动画
+///
+enum TransitionType{
+  fadeIn
+}
+
 
 ///
 /// 路由操作
@@ -50,7 +57,7 @@ class Router {
     Object args = routeSettings.arguments ?? const {};
     for (var i = 0; i < configs.length; i++) {
       if(configs[i].url == url) {
-        return createRoute(configs[i].page(args));
+        return createRoute(configs[i].page(Map<String, dynamic>.from(args)));
       }
     }
     showToast('找不到路由');
@@ -102,7 +109,7 @@ class Router {
   ///   },
   /// );
   /// ```
-  static Future navigateTo({Widget page, RouterType type = RouterType.navigateTo, String url, Object params = const {}}) async{
+  static Future navigateTo({Widget page, RouterType type = RouterType.navigateTo, String url, Object params = const {}, TransitionType transition}) async{
     /// loading表示(防止loading乱占用导航问题关闭他)
     await navigateBack(isLoading: true);
 
@@ -147,8 +154,8 @@ class Router {
   /// );
   /// ```
   /// 全部路由删掉并打开一个页面
-  static Future reLaunch({Widget page, String url, Object params}) async{
-    navigateTo(page: page, type: RouterType.reLaunch, url: url, params: params);
+  static Future reLaunch({Widget page, String url, Object params, TransitionType transition}) async{
+    navigateTo(page: page, type: RouterType.reLaunch, url: url, params: params, transition: transition);
   }
 
   /// `重载页面`
@@ -160,8 +167,8 @@ class Router {
   /// );
   /// ```
   /// 重定向一个页面
-  static Future redirect({Widget page, String url,Object params}) async{
-    navigateTo(page:page, type: RouterType.redirect, url: url, params: params);
+  static Future redirect({Widget page, String url,Object params, TransitionType transition}) async{
+    navigateTo(page:page, type: RouterType.redirect, url: url, params: params, transition: transition);
   }
 
 

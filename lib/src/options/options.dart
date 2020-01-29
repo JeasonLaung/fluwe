@@ -13,6 +13,8 @@ class ConfigOptions {
   /// 请求
   /// 域名
   final String baseUrl;
+  /// 签名名称（会存到cookie）
+  final String signName;
   final int connectTimeout;
   final int receiveTimeout;
   ConfigOptions({
@@ -20,6 +22,7 @@ class ConfigOptions {
     this.connectTimeout = 10,
     this.designHeight = 1334,
     this.designWidth = 750,
+    this.signName,
     this.keepAlive = false,
     this.receiveTimeout = 10});
 }
