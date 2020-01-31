@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
+// import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -352,86 +352,86 @@ Future<String> _findLocalPath() async {
   return directory.path;
 }
 
-// 下载申请权限
-Future<bool> _downloadCheckPermission() async {
-  // 先对所在平台进行判断
-  if (Platform.isAndroid) {
-    PermissionStatus permission = await PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.storage);
-    if (permission != PermissionStatus.granted) {
-      Map<PermissionGroup, PermissionStatus> permissions =
-          await PermissionHandler()
-              .requestPermissions([PermissionGroup.storage]);
-      if (permissions[PermissionGroup.storage] == PermissionStatus.granted) {
-        return true;
-      }
-    } else {
-      return true;
-    }
-  } else {
-    return true;
-  }
-  return false;
-}
+// // 下载申请权限
+// Future<bool> _downloadCheckPermission() async {
+//   // 先对所在平台进行判断
+//   if (Platform.isAndroid) {
+//     PermissionStatus permission = await PermissionHandler()
+//         .checkPermissionStatus(PermissionGroup.storage);
+//     if (permission != PermissionStatus.granted) {
+//       Map<PermissionGroup, PermissionStatus> permissions =
+//           await PermissionHandler()
+//               .requestPermissions([PermissionGroup.storage]);
+//       if (permissions[PermissionGroup.storage] == PermissionStatus.granted) {
+//         return true;
+//       }
+//     } else {
+//       return true;
+//     }
+//   } else {
+//     return true;
+//   }
+//   return false;
+// }
 
 
-/// 下载文件
-/// 
-Future<String> downloadFile({
-  @required String url, 
-  Function success,
-  Function fail,
-  Map<String, String> headers = const {},
-  String savePath}) async{
+// /// 下载文件
+// /// 
+// Future<String> downloadFile({
+//   @required String url, 
+//   Function success,
+//   Function fail,
+//   Map<String, String> headers = const {},
+//   String savePath}) async{
 
-  if(await _downloadCheckPermission()) {
-    String path = savePath ?? cache.getString('SAVE_PATH');
-    if (empty(path)) {
-      path = await _findLocalPath();
-    }
-    final _taskId = await FlutterDownloader.enqueue(
-      url: url,
-      headers: headers,
-      savedDir: path,
-      showNotification: true, // show download progress in status bar (for Android)
-      openFileFromNotification: true, // click on notification to open downloaded file (for Android)
-    );
-
-
-    // _registerCallback(String taskId, DownloadTaskStatus status, int progress) {
-    //   if (taskId == _taskId) {
-    //     if (status == DownloadTaskStatus.complete) {
-    //       if (success is Function) {
-    //         success();
-    //       }
-    //     } else if(status == DownloadTaskStatus.canceled || status == DownloadTaskStatus.failed || status == DownloadTaskStatus.undefined){
-    //       if (fail is Function) {
-    //         fail();
-    //       }
-    //     }
-    //   }
-    // }
-    // FlutterDownloader.registerCallback(_registerCallback);
-
-    return _taskId;
-  } else {
-    throw '文件读写权限没获取';
-  }
-}
+//   if(await _downloadCheckPermission()) {
+//     String path = savePath ?? cache.getString('SAVE_PATH');
+//     if (empty(path)) {
+//       path = await _findLocalPath();
+//     }
+//     final _taskId = await FlutterDownloader.enqueue(
+//       url: url,
+//       headers: headers,
+//       savedDir: path,
+//       showNotification: true, // show download progress in status bar (for Android)
+//       openFileFromNotification: true, // click on notification to open downloaded file (for Android)
+//     );
 
 
-///
-/// 取消下载
-///
-Future<bool> cancelDownload({String taskId, bool all: false}) async{
-  if (all) {
-    await FlutterDownloader.cancelAll();
-    return true;
-  } else {
-    await FlutterDownloader.cancel(taskId:taskId);
-    return true;
-  }
-}
+//     // _registerCallback(String taskId, DownloadTaskStatus status, int progress) {
+//     //   if (taskId == _taskId) {
+//     //     if (status == DownloadTaskStatus.complete) {
+//     //       if (success is Function) {
+//     //         success();
+//     //       }
+//     //     } else if(status == DownloadTaskStatus.canceled || status == DownloadTaskStatus.failed || status == DownloadTaskStatus.undefined){
+//     //       if (fail is Function) {
+//     //         fail();
+//     //       }
+//     //     }
+//     //   }
+//     // }
+//     // FlutterDownloader.registerCallback(_registerCallback);
+
+//     return _taskId;
+//   } else {
+//     throw '文件读写权限没获取';
+//   }
+// }
+
+
+// ///
+// /// 取消下载
+// ///
+// Future<bool> cancelDownload({String taskId, bool all: false}) async{
+//   if (all) {
+//     await FlutterDownloader.cancelAll();
+//     return true;
+//   } else {
+//     await FlutterDownloader.cancel(taskId:taskId);
+//     return true;
+//   }
+// }
 
 
 ///
@@ -472,12 +472,12 @@ CachedNetworkImage cacheImage(url,{BoxFit fit,Alignment alignment}) {
 /// );
 /// ```
 
-Future<List<DownloadTask>> getDownloadFileList({String query}) {
-  if (query is String) {
-    return FlutterDownloader.loadTasksWithRawQuery(query: query);
-  }
-  return FlutterDownloader.loadTasks();
-}
+// Future<List<DownloadTask>> getDownloadFileList({String query}) {
+//   if (query is String) {
+//     return FlutterDownloader.loadTasksWithRawQuery(query: query);
+//   }
+//   return FlutterDownloader.loadTasks();
+// }
 
 
 /// 空

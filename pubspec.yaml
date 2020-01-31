@@ -12,7 +12,7 @@ dependencies:
     sdk: flutter
 
     # 图像压缩
-  flutter_image_compress: ^0.6.5
+  flutter_image_compress: ^0.6.5+1
 
   # 网络图片缓存
   cached_network_image: ^2.0.0
@@ -43,8 +43,8 @@ dependencies:
   
   # 网页
   # webview_flutter: ^0.3.19+4
-  # 下载
-  flutter_downloader: ^1.4.0
+  # 下载（苹果不行）
+  # flutter_downloader: ^1.4.0
 
   # 原生toast
   fluttertoast: ^3.1.3

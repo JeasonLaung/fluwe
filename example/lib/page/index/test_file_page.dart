@@ -108,29 +108,29 @@ class TestFilePage extends StatelessWidget {
               });
           }),
 
-          WeCell('下载文件',
-            onTap: () {
-              // 生成二进制不保存
-              downloadFile(
-                url: 'https://v2test.mputao.com/download/app-release.apk'
-              );
-          }),
+          // WeCell('下载文件',
+          //   onTap: () {
+          //     // 生成二进制不保存
+          //     downloadFile(
+          //       url: 'https://v2test.mputao.com/download/app-release.apk'
+          //     );
+          // }),
 
-          WeCell('取消所有下载',
-            onTap: () {
-              // 生成二进制不保存
-              cancelDownload(
-                all: true
-              );
-          }),
+          // WeCell('取消所有下载',
+          //   onTap: () {
+          //     // 生成二进制不保存
+          //     cancelDownload(
+          //       all: true
+          //     );
+          // }),
           
-          WeCell('下载历史',
-            onTap: () {
-              getDownloadFileList().then((res) {
-                showModal(content: res.toString());
-              });
-            },
-          )
+          // WeCell('下载历史',
+          //   onTap: () {
+          //     getDownloadFileList().then((res) {
+          //       showModal(content: res.toString());
+          //     });
+          //   },
+          // )
         ],
       ),
     );

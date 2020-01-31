@@ -20,30 +20,17 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>FDAllFilesDownloadedMessage</key>
+	<string>文件已下载完毕</string>
+	<key>FDMaximumConcurrentTasks</key>
+	<integer>5</integer>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
-	<key>UIMainStoryboardFile</key>
-	<string>Main</string>
-	<key>UISupportedInterfaceOrientations</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>UISupportedInterfaceOrientations~ipad</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
-
-
-	<!-- 基本配置，通常不过审核都有这个问题 -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>App需要您的同意,才能访问媒体资料库,用于读写您的媒体图片</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
@@ -70,55 +57,26 @@
 	<string>App需要您的同意,才能访问相册,用于读取您的照片</string>
 	<key>NSRemindersUsageDescription</key>
 	<string>App需要您的同意,才能访问提醒事项,用于读取您的提醒事项信息</string>
-
-	<!-- 网页配置 -->
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIMainStoryboardFile</key>
+	<string>Main</string>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 	<key>io.flutter.embedded_views_preview</key>
 	<true/>
-
-	<!-- 下载插件配置 -->
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSExceptionDomains</key>
-		<dict>
-			<key>v2.mputao.com</key>
-			<dict>
-				<!-- add this key to enable subdomains such as sub.yourserver.com -->
-				<key>NSIncludesSubdomains</key>
-				<true/>
-				<!-- add this key to allow standard HTTP requests, thus negating the ATS -->
-				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-				<!-- add this key to specify the minimum TLS version to accept -->
-				<key>NSTemporaryExceptionMinimumTLSVersion</key>
-				<string>TLSv1.1</string>
-			</dict>
-
-			<key>jeason.xyz</key>
-			<dict>
-				<!-- add this key to enable subdomains such as sub.yourserver.com -->
-				<key>NSIncludesSubdomains</key>
-				<true/>
-				<!-- add this key to allow standard HTTP requests, thus negating the ATS -->
-				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-				<!-- add this key to specify the minimum TLS version to accept -->
-				<key>NSTemporaryExceptionMinimumTLSVersion</key>
-				<string>TLSv1.1</string>
-			</dict>
-		</dict>
-	</dict>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-			<key>NSAllowsArbitraryLoads</key><true/>
-	</dict>
-
-	<!-- changes this number to configure the maximum number of concurrent tasks -->
-	<key>FDMaximumConcurrentTasks</key>
-	<integer>5</integer>
-	<key>FDAllFilesDownloadedMessage</key>
-	<string>文件已下载完毕</string>
-	<!-- NSDocumentDirectory -->
-
-
 </dict>
 </plist>

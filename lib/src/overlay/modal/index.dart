@@ -43,7 +43,6 @@ Future showModal({
 
 Future closeModal() async{
   if (OverlayStateStates.lock == true) {
-    OverlayStateStates.lock = false;
     Router.navigateBack();
   }
 }
