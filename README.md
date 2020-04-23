@@ -71,7 +71,6 @@ https://github.com/fluttercommunity/flutter_downloader
 
 一个flutter项目快捷template，包含websocket，dio，bloc，fluro，微信小程序api，推送等方便前端开发者快速上手flutter开发APP的应用
 
-![桃乃木镇楼](https://user-gold-cdn.xitu.io/2019/12/7/16ee08009c1811d1?w=1320&h=915&f=webp&s=37158)
 
 
 # 参考ui框架
