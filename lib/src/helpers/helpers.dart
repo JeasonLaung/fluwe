@@ -162,6 +162,13 @@ Future<bool> openBrower({@required url}) async{
 // }
 
 ///
+/// 颜色转换
+/// 
+Color col(String c) {
+  return Color(int.parse(c, radix: 16) | 0xFF000000);
+}
+
+///
 /// 快捷px 以设置为准
 ///
 double px(double px) {
