@@ -190,21 +190,10 @@ class Router {
 
   /// 创建一个route
   static Route createRoute(page) {
-    return PageRouteBuilder(
-      pageBuilder: (
-        BuildContext context, 
-        Animation<double> animation, 
-        Animation<double> secondaryAnimation) {
-          return page;
-        }, transitionsBuilder: (
-          BuildContext context,
-          Animation<double> animation,
-          Animation<double> secondaryAnimation,
-          Widget child,
-        ) {
-          // 添加一个平移动画
-          return createTransition(animation, child);
-        }
+    return MaterialPageRoute(
+      builder: (BuildContext context) {
+        return page;
+      },
     );
   }
 }
