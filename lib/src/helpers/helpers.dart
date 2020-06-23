@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 // import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -47,8 +48,10 @@ Future closeToast() async{
   return await Fluttertoast.cancel();
 }
 
-
-
+///
+/// 打印
+///
+Logger get log => Logger();
 
 ///
 /// 拨打电话

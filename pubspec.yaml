@@ -57,6 +57,9 @@ dependencies:
   # 微信库
   # fluwx: ^1.2.1+1
 
+  # 打印
+  logger: ^0.9.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
