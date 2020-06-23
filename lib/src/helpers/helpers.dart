@@ -51,7 +51,8 @@ Future closeToast() async{
 ///
 /// 打印
 ///
-Logger get log => Logger();
+final Logger _log = Logger();
+Logger get log => _log;
 
 ///
 /// 拨打电话
