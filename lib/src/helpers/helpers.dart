@@ -27,7 +27,7 @@ Future showToast(
     Toast toastLength, 
     int timeInSecForIos = 1, 
     double fontSize = 16.0, 
-    ToastGravity gravity, 
+    ToastGravity gravity = ToastGravity.CENTER, 
     Color backgroundColor, 
     Color textColor}
   ) async{
