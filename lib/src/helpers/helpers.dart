@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -218,65 +217,65 @@ SharedPreferences cache = Fluwe.cache;
 ///
 /// APP权限调起
 ///
-Future<bool> openSetting() async{
-  return await PermissionHandler().openAppSettings();
-}
+// Future<bool> openSetting() async{
+//   return await PermissionHandler().openAppSettings();
+// }
 
 ///
 /// 处理权限(保证打开状态)
 ///
-Future<bool> requestPermission(permission, {Function fail}) async{
-  PermissionHandler permissionHandler = PermissionHandler();
-  PermissionStatus status;
-  Map<PermissionGroup, PermissionStatus> statuss = {};
-  if (permission is PermissionGroup) {
-    /// 检测授权
-    status = await permissionHandler.checkPermissionStatus(permission);
+// Future<bool> requestPermission(permission, {Function fail}) async{
+//   PermissionHandler permissionHandler = PermissionHandler();
+//   PermissionStatus status;
+//   Map<PermissionGroup, PermissionStatus> statuss = {};
+//   if (permission is PermissionGroup) {
+//     /// 检测授权
+//     status = await permissionHandler.checkPermissionStatus(permission);
 
-    print(status);
-    /// denied（苹果已经授权的话会直接返回这个denied）   granted为（ios第一次授权成功 或 安卓授权打开状态返回）
-    if (status == PermissionStatus.denied || status == PermissionStatus.granted) {
-      return true;
-    } else {
-      statuss = await permissionHandler.requestPermissions([permission]);
-      /// 第一次授权
-      if (statuss[permission] == PermissionStatus.granted) {
-        return true;
-      } else {
-        if (fail is Function) {
-          fail();
-        }
-        throw false;
-      }
-    }
-  } else if(permission is List<PermissionGroup>) {
-    List<PermissionGroup> notPermissions = [];
-    print(permission);
-    permission.map((item) async{
-      status = await permissionHandler.checkPermissionStatus(item);
-      print(status);
-      /// denied（苹果已经授权的话会直接返回这个denied）   granted为（ios第一次授权成功 或 安卓授权打开状态返回）
-      if (status == PermissionStatus.denied || status == PermissionStatus.granted) {
-      } else {
-        notPermissions.add(item);
-      }
-    });
-    print(notPermissions);
+//     print(status);
+//     /// denied（苹果已经授权的话会直接返回这个denied）   granted为（ios第一次授权成功 或 安卓授权打开状态返回）
+//     if (status == PermissionStatus.denied || status == PermissionStatus.granted) {
+//       return true;
+//     } else {
+//       statuss = await permissionHandler.requestPermissions([permission]);
+//       /// 第一次授权
+//       if (statuss[permission] == PermissionStatus.granted) {
+//         return true;
+//       } else {
+//         if (fail is Function) {
+//           fail();
+//         }
+//         throw false;
+//       }
+//     }
+//   } else if(permission is List<PermissionGroup>) {
+//     List<PermissionGroup> notPermissions = [];
+//     print(permission);
+//     permission.map((item) async{
+//       status = await permissionHandler.checkPermissionStatus(item);
+//       print(status);
+//       /// denied（苹果已经授权的话会直接返回这个denied）   granted为（ios第一次授权成功 或 安卓授权打开状态返回）
+//       if (status == PermissionStatus.denied || status == PermissionStatus.granted) {
+//       } else {
+//         notPermissions.add(item);
+//       }
+//     });
+//     print(notPermissions);
 
-    statuss = await permissionHandler.requestPermissions(notPermissions);
-    statuss.map((key, val) {
-      if (val == PermissionStatus.granted) {
-      } else {
-        if (fail is Function) {
-          fail();
-        }
-        throw false;
-      }
-    });
-    return true;
-  }
-  throw false;
-}
+//     statuss = await permissionHandler.requestPermissions(notPermissions);
+//     statuss.map((key, val) {
+//       if (val == PermissionStatus.granted) {
+//       } else {
+//         if (fail is Function) {
+//           fail();
+//         }
+//         throw false;
+//       }
+//     });
+//     return true;
+//   }
+//   throw false;
+// }
 
 
 

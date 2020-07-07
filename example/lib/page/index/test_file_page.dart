@@ -16,7 +16,7 @@ class TestFilePage extends StatelessWidget {
         children: <WeCell>[
           WeCell('打开设置',
             onTap: () {
-              openSetting();
+              // openSetting();
           }),
 
           WeCell('选择图片（官方）',

@@ -52,7 +52,7 @@ dependencies:
   dio: ^3.0.8
 
   #权限
-  permission_handler: ^4.1.0
+  # permission_handler: ^4.1.0
 
   # 微信库
   # fluwx: ^1.2.1+1

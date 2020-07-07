@@ -23,7 +23,7 @@ class TestAuthPage extends StatelessWidget {
       body: WeCellGroup(
         children: <WeCell>[
           WeCell('打开权限',onTap: () {
-            openSetting();
+            // openSetting();
           },)
         ]
       ),
