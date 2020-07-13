@@ -31,6 +31,7 @@ class ConfigOptions {
 class RouteOptions {
   final String url;
   final Widget Function(Map<String, dynamic> args) page;
-  RouteOptions({this.url, this.page});
+  final bool Function(Map<String, dynamic> args) condition;
+  RouteOptions({this.url, this.page, this.condition});
 }
 

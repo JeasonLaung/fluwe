@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import '../helpers/helpers.dart';
 import '../options/options.dart';
 import '../common/fluwe.dart';
 
-
-
 /// -----------------------------
-/// 
+///
 ///  路由管理器
-/// 
+///
 /// -----------------------------
 
 // 用法
 // Router
-
-
 
 ///
 /// 路由跳转方式
@@ -22,8 +19,10 @@ import '../common/fluwe.dart';
 enum RouterType {
   /// 关闭所有打开一个页面
   reLaunch,
+
   /// 重定向一个页面
   redirect,
+
   /// 添加一个页面
   navigateTo
 }
@@ -31,14 +30,11 @@ enum RouterType {
 ///
 /// 过度动画
 ///
-enum TransitionType{
-  fadeIn
-}
-
+enum TransitionType { fadeIn }
 
 ///
 /// 路由操作
-/// 
+///
 class Router {
   /// 导航器全局key
   static GlobalKey<NavigatorState> navigatorKey;
@@ -50,13 +46,22 @@ class Router {
   }
 
   /// 路由阻断器
-  static Route<dynamic> onGenerateRoute (RouteSettings routeSettings) {
+  static Route<dynamic> onGenerateRoute(RouteSettings routeSettings) {
     /// 路由名称
     String url = routeSettings.name;
+
     /// 路由参数
     Object args = routeSettings.arguments ?? const {};
+
+    /// 查询路由并返回
     for (var i = 0; i < configs.length; i++) {
-      if(configs[i].url == url) {
+      if (configs[i].url == url) {
+        /// 路由拦截，进行判断是否跳转路由
+        bool canRun = true;
+        if (configs[i].condition != null) {
+          canRun = configs[i].condition(Map<String, dynamic>.from(args));
+        }
+        if (!canRun) return null;
         return createRoute(configs[i].page(Map<String, dynamic>.from(args)));
       }
     }
@@ -74,17 +79,19 @@ class Router {
   ///   result: '12345689'
   /// );
   /// ```
-  static Future navigateBack({int delta: 1, result, isLoading = false}) async{
+  static Future navigateBack({int delta: 1, result, isLoading = false}) async {
     /// loading表示
-    if(isLoading == true && Fluwe.isLoading == false) {
+    if (isLoading == true && Fluwe.isLoading == false) {
       return false;
     }
+
     /// 循环delta次返回
     for (var i = 0; i < delta; i++) {
-      if(navigatorKey.currentState.canPop()) {
+      if (navigatorKey.currentState.canPop()) {
         navigatorKey.currentState.pop(delta == i + 1 ? result : null);
       }
     }
+
     /// loading表示
     Fluwe.isLoading = false;
     return true;
@@ -98,9 +105,9 @@ class Router {
   ///   ),
   /// );
   /// ```
-  /// 
+  ///
   /// 或
-  /// 
+  ///
   /// ```
   /// Router.navigateTo(
   ///   url: '/login',
@@ -109,40 +116,52 @@ class Router {
   ///   },
   /// );
   /// ```
-  static Future navigateTo({Widget page, RouterType type = RouterType.navigateTo, String url, Object params = const {}, TransitionType transition}) async{
+  static Future navigateTo(
+      {Widget page,
+      RouterType type = RouterType.navigateTo,
+      String url,
+      Object params = const {},
+      TransitionType transition}) async {
     /// loading表示(防止loading乱占用导航问题关闭他)
     await navigateBack(isLoading: true);
 
-    if(page != null) {
-      Route pushPage = createRoute(page);
+    try {
+      if (page != null) {
+        Route pushPage = createRoute(page);
 
-      /// 记录为当前路由
-      currentRoute = pushPage;
+        /// 记录为当前路由
+        currentRoute = pushPage;
 
-      switch (type) {
-        case RouterType.navigateTo:
-          return await navigatorKey.currentState.push(pushPage);
-        case RouterType.redirect:
-          return await navigatorKey.currentState.pushReplacement(pushPage);
-        case RouterType.reLaunch:
-          return await navigatorKey.currentState.pushAndRemoveUntil(pushPage, (Route<dynamic> route) => false);
-        default:
-          return false;
+        switch (type) {
+          case RouterType.navigateTo:
+            return await navigatorKey.currentState.push(pushPage);
+          case RouterType.redirect:
+            return await navigatorKey.currentState.pushReplacement(pushPage);
+          case RouterType.reLaunch:
+            return await navigatorKey.currentState
+                .pushAndRemoveUntil(pushPage, (Route<dynamic> route) => false);
+          default:
+            return false;
+        }
+      } else if (url != null) {
+        switch (type) {
+          case RouterType.navigateTo:
+            return await navigatorKey.currentState
+                .pushNamed(url, arguments: params);
+          case RouterType.redirect:
+            return await navigatorKey.currentState
+                .pushReplacementNamed(url, arguments: params);
+          case RouterType.reLaunch:
+            return await navigatorKey.currentState.pushNamedAndRemoveUntil(
+                url, (Route<dynamic> route) => false,
+                arguments: params);
+          default:
+            return false;
+        }
       }
-      
-    } else if (url!=null) {
-      switch (type) {
-        case RouterType.navigateTo:
-          return await navigatorKey.currentState.pushNamed(url, arguments: params);
-        case RouterType.redirect:
-          return await navigatorKey.currentState.pushReplacementNamed(url, arguments: params);
-        case RouterType.reLaunch:
-          return await navigatorKey.currentState.pushNamedAndRemoveUntil(url, (Route<dynamic> route) => false, arguments: params);
-        default:
-          return false;
-      }
+    } catch (e) {
+      Logger().i(e);
     }
-    
   }
 
   /// `重载页面`
@@ -154,8 +173,17 @@ class Router {
   /// );
   /// ```
   /// 全部路由删掉并打开一个页面
-  static Future reLaunch({Widget page, String url, Object params, TransitionType transition}) async{
-    navigateTo(page: page, type: RouterType.reLaunch, url: url, params: params, transition: transition);
+  static Future reLaunch(
+      {Widget page,
+      String url,
+      Object params,
+      TransitionType transition}) async {
+    navigateTo(
+        page: page,
+        type: RouterType.reLaunch,
+        url: url,
+        params: params,
+        transition: transition);
   }
 
   /// `重载页面`
@@ -167,12 +195,18 @@ class Router {
   /// );
   /// ```
   /// 重定向一个页面
-  static Future redirect({Widget page, String url,Object params, TransitionType transition}) async{
-    navigateTo(page:page, type: RouterType.redirect, url: url, params: params, transition: transition);
+  static Future redirect(
+      {Widget page,
+      String url,
+      Object params,
+      TransitionType transition}) async {
+    navigateTo(
+        page: page,
+        type: RouterType.redirect,
+        url: url,
+        params: params,
+        transition: transition);
   }
-
-
-
 
   /// `创建一个平移变换`
   /// 跳转过去查看源代码，可以看到有各种各样定义好的变换
@@ -186,7 +220,6 @@ class Router {
       child: child, // child is the value returned by pageBuilder
     );
   }
-
 
   /// 创建一个route
   static Route createRoute(page) {
