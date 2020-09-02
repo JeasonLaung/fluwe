@@ -62,7 +62,10 @@ class Router {
           canRun = configs[i].condition(Map<String, dynamic>.from(args));
         }
         if (!canRun) return null;
-        return createRoute(configs[i].page(Map<String, dynamic>.from(args)));
+        return createRoute(
+          configs[i].page(Map<String, dynamic>.from(args)),
+          settings: routeSettings,
+        );
       }
     }
     showToast('找不到路由');
@@ -222,8 +225,9 @@ class Router {
   }
 
   /// 创建一个route
-  static Route createRoute(page) {
+  static Route createRoute(Widget page, {RouteSettings settings}) {
     return MaterialPageRoute(
+      settings: settings,
       builder: (BuildContext context) {
         return page;
       },
