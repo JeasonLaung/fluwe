@@ -163,6 +163,7 @@ class Router {
         }
       }
     } catch (e) {
+      // print(e);
       Logger().i(e);
     }
   }

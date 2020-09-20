@@ -11,7 +11,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>fluwe_example</string>
+	<string>example</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -20,43 +20,8 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
-	<key>FDAllFilesDownloadedMessage</key>
-	<string>文件已下载完毕</string>
-	<key>FDMaximumConcurrentTasks</key>
-	<integer>5</integer>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-	</dict>
-	<key>NSAppleMusicUsageDescription</key>
-	<string>App需要您的同意,才能访问媒体资料库,用于读写您的媒体图片</string>
-	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>App需要您的同意,才能访问蓝牙,用于更精准的室内定位</string>
-	<key>NSCalendarsUsageDescription</key>
-	<string>App需要您的同意,才能访问日历,用于读取您的日程信息</string>
-	<key>NSCameraUsageDescription</key>
-	<string>App需要您的同意,才能访问相机,用于使用您的相机</string>
-	<key>NSHealthShareUsageDescription</key>
-	<string>App需要您的同意,才能访问健康分享,用于读取您的健康分享信息</string>
-	<key>NSHealthUpdateUsageDescription</key>
-	<string>App需要您的同意,才能访问健康更新,用于读取您的健康更新信息</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>App需要您的同意,才能始终访问位置,用于记录您的路程信息</string>
-	<key>NSLocationUsageDescription</key>
-	<string>App需要您的同意,才能访问位置,用于记录您的位置信息</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>App需要您的同意,才能在使用期间访问位置,用于记录您的位置信息</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>App需要您的同意,才能访问麦克风,用于使用录音功能</string>
-	<key>NSMotionUsageDescription</key>
-	<string>App需要您的同意,才能访问运动与健身,用于读取您的运动信息</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>App需要您的同意,才能访问相册,用于读取您的照片</string>
-	<key>NSRemindersUsageDescription</key>
-	<string>App需要您的同意,才能访问提醒事项,用于读取您的提醒事项信息</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -76,7 +41,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>io.flutter.embedded_views_preview</key>
-	<true/>
 </dict>
 </plist>

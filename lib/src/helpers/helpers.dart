@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 // import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:logger/logger.dart';
+// import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
@@ -16,79 +16,69 @@ import 'package:cached_network_image/cached_network_image.dart';
 import '../overlay/loading/index.dart';
 import '../common/fluwe.dart';
 
-
 export '../overlay/overlay.dart';
 
 /// 原生吐司函数
-Future showToast(
-  String msg, 
-  {
-    Toast toastLength, 
-    int timeInSecForIos = 1, 
-    double fontSize = 16.0, 
-    ToastGravity gravity = ToastGravity.CENTER, 
-    Color backgroundColor, 
-    Color textColor}
-  ) async{
+Future showToast(String msg,
+    {Toast toastLength,
+    int timeInSecForIos = 1,
+    double fontSize = 16.0,
+    ToastGravity gravity = ToastGravity.CENTER,
+    Color backgroundColor,
+    Color textColor}) async {
   Fluttertoast.cancel();
   return Fluttertoast.showToast(
-    msg:msg, 
-    toastLength: toastLength, 
-    timeInSecForIos: timeInSecForIos, 
-    fontSize:fontSize, 
-    gravity: gravity, 
-    backgroundColor: backgroundColor, 
-    textColor: textColor
-  );
+      msg: msg,
+      toastLength: toastLength,
+      timeInSecForIos: timeInSecForIos,
+      fontSize: fontSize,
+      gravity: gravity,
+      backgroundColor: backgroundColor,
+      textColor: textColor);
 }
 
 /// 关闭原生吐司函数
-Future closeToast() async{
+Future closeToast() async {
   return await Fluttertoast.cancel();
 }
 
 ///
 /// 打印
 ///
-final Logger _log = Logger();
-Logger get log => _log;
+// final Logger _log = Logger();
+// Logger get console => _log;
 
 ///
 /// 拨打电话
 ///
-Future makePhoneCall({@required phoneNumber}) async{
+Future makePhoneCall({@required phoneNumber}) async {
   openBrower(url: 'tel:$phoneNumber');
 }
-
 
 ///
 /// 发短信
 ///
-Future sendMessage({@required phoneNumber}) async{
+Future sendMessage({@required phoneNumber}) async {
   openBrower(url: 'sms:' + phoneNumber);
 }
 
 ///
 /// 发短信
 ///
-Future sendMail({@required email, String body = ''}) async{
+Future sendMail({@required email, String body = ''}) async {
   openBrower(url: 'mailto:' + email + '?subject=' + body);
 }
-
 
 ///
 /// 选择图片
 ///
-enum ChooseImageType{
-  camera,
-  photo
-}
+enum ChooseImageType { camera, photo }
 bool chooseImageBlock = false;
-Future<File> chooseImage({
-  ChooseImageType type = ChooseImageType.photo, 
-  /// 是否压缩
-  bool compress = false
-}) async{
+Future<File> chooseImage(
+    {ChooseImageType type = ChooseImageType.photo,
+
+    /// 是否压缩
+    bool compress = false}) async {
   if (chooseImageBlock == true) {
     throw '不能同时打开两次选择文件';
   }
@@ -119,16 +109,13 @@ Future<File> chooseImage({
   // });
 }
 
-enum OpenAppType {
-  weixin,
-  alipays
-}
+enum OpenAppType { weixin, alipays }
 
-/// 
+///
 /// 调起其他应用
-/// 
+///
 
-Future openApp({@required OpenAppType appName}) async{
+Future openApp({@required OpenAppType appName}) async {
   String url;
   switch (appName) {
     case OpenAppType.alipays:
@@ -143,11 +130,10 @@ Future openApp({@required OpenAppType appName}) async{
   openBrower(url: url);
 }
 
-
 ///
 /// 打开外部网址
 ///
-Future<bool> openBrower({@required url}) async{
+Future<bool> openBrower({@required url}) async {
   if (await canLaunch(url.toString())) {
     await launch(url.toString());
     return true;
@@ -155,7 +141,6 @@ Future<bool> openBrower({@required url}) async{
     throw 'Could not launch $url.toString()';
   }
 }
-
 
 // ///
 // /// 用户操作
@@ -166,7 +151,7 @@ Future<bool> openBrower({@required url}) async{
 
 ///
 /// 颜色转换
-/// 
+///
 Color col(String c) {
   return Color(int.parse(c, radix: 16) | 0xFF000000);
 }
@@ -184,6 +169,7 @@ double px(double px) {
 double vh(double vh) {
   return vh * Fluwe.mediaQueryData.size.height / 100;
 }
+
 ///
 /// h5相关的的宽度百分比
 ///
@@ -191,28 +177,25 @@ double vw(double vw) {
   return vw * Fluwe.mediaQueryData.size.width / 100;
 }
 
-/// 
+///
 /// rpx 微信统一api
-/// 
+///
 double rpx(double px) {
   return Fluwe.mediaQueryData.size.width / 750.0 * px;
 }
 
-
 ///
 /// 原生分享
 ///
-Future share(String text, {String subject, Rect sharePositonOrigin}) async{
-  return await Share.share(text, subject: subject, sharePositionOrigin: sharePositonOrigin);
+Future share(String text, {String subject, Rect sharePositonOrigin}) async {
+  return await Share.share(text,
+      subject: subject, sharePositionOrigin: sharePositonOrigin);
 }
-
 
 ///
 /// 缓存
 ///
 SharedPreferences cache = Fluwe.cache;
-
-
 
 ///
 /// APP权限调起
@@ -277,20 +260,19 @@ SharedPreferences cache = Fluwe.cache;
 //   throw false;
 // }
 
-
-
-
-enum CompressOutputType{
+enum CompressOutputType {
   /// 二进制文件,（返回）
   uint8List,
+
   /// 文件
   file
 }
+
 ///
 /// 压缩图片
 /// 相关连接 [https://pub.flutter-io.cn/packages/flutter_image_compress]
-/// 
-/// 1.二进制图片显示 
+///
+/// 1.二进制图片显示
 /// ```
 /// Image.memory(Uint8List bytes)
 /// ```
@@ -302,54 +284,57 @@ enum CompressOutputType{
 /// ```
 ///Image.network(String path)
 /// ```
-Future compressImage(File file, {
-  /// 输出类型
-  CompressOutputType output = CompressOutputType.uint8List,
-  /// 压缩质量
-  int quality = 70,
-  /// 最小高度
-  int minHeight = 1080,
-  /// 最小宽度
-  int minWidth = 1920,
-  /// 转角
-  int rotate = 0,
-  CompressFormat format = CompressFormat.jpeg
-}) async{
+Future compressImage(File file,
+    {
+
+    /// 输出类型
+    CompressOutputType output = CompressOutputType.uint8List,
+
+    /// 压缩质量
+    int quality = 70,
+
+    /// 最小高度
+    int minHeight = 1080,
+
+    /// 最小宽度
+    int minWidth = 1920,
+
+    /// 转角
+    int rotate = 0,
+    CompressFormat format = CompressFormat.jpeg}) async {
   showLoading(canBack: false);
   var result;
   switch (output) {
     case CompressOutputType.uint8List:
-      result = await FlutterImageCompress.compressWithFile(
-        file.absolute.path,
-        minWidth: minWidth,
-        minHeight: minHeight,
-        quality: quality,
-        rotate: rotate,
-        format: format
-      );
+      result = await FlutterImageCompress.compressWithFile(file.absolute.path,
+          minWidth: minWidth,
+          minHeight: minHeight,
+          quality: quality,
+          rotate: rotate,
+          format: format);
       result = Uint8List.fromList(result);
       break;
     default:
       String ext = file.absolute.path.split('.').last;
+
       /// 应用自身空间
       Directory dir = await getApplicationDocumentsDirectory();
+
       /// 保存地址
-      String savePath = '${dir.path}/${DateTime.now().millisecondsSinceEpoch}.$ext';
+      String savePath =
+          '${dir.path}/${DateTime.now().millisecondsSinceEpoch}.$ext';
       result = await FlutterImageCompress.compressAndGetFile(
-        file.absolute.path,
-        savePath,
-        minWidth: minWidth,
-        minHeight: minHeight,
-        quality: quality,
-        rotate: rotate,
-        format: format
-      );
+          file.absolute.path, savePath,
+          minWidth: minWidth,
+          minHeight: minHeight,
+          quality: quality,
+          rotate: rotate,
+          format: format);
       break;
   }
   closeLoading();
   return result;
 }
-
 
 // 获取存储路径
 Future<String> _findLocalPath() async {
@@ -384,11 +369,10 @@ Future<String> _findLocalPath() async {
 //   return false;
 // }
 
-
 // /// 下载文件
-// /// 
+// ///
 // Future<String> downloadFile({
-//   @required String url, 
+//   @required String url,
 //   Function success,
 //   Function fail,
 //   Map<String, String> headers = const {},
@@ -406,7 +390,6 @@ Future<String> _findLocalPath() async {
 //       showNotification: true, // show download progress in status bar (for Android)
 //       openFileFromNotification: true, // click on notification to open downloaded file (for Android)
 //     );
-
 
 //     // _registerCallback(String taskId, DownloadTaskStatus status, int progress) {
 //     //   if (taskId == _taskId) {
@@ -429,7 +412,6 @@ Future<String> _findLocalPath() async {
 //   }
 // }
 
-
 // ///
 // /// 取消下载
 // ///
@@ -443,11 +425,10 @@ Future<String> _findLocalPath() async {
 //   }
 // }
 
-
 ///
 /// 缓存图片
 ///
-CachedNetworkImage cacheImage(url,{BoxFit fit,Alignment alignment}) {
+CachedNetworkImage cacheImage(url, {BoxFit fit, Alignment alignment}) {
   return CachedNetworkImage(
     imageUrl: url,
     imageBuilder: (context, imageProvider) => Container(
@@ -457,13 +438,14 @@ CachedNetworkImage cacheImage(url,{BoxFit fit,Alignment alignment}) {
             image: imageProvider,
             fit: fit ?? BoxFit.cover,
             colorFilter:
-            ColorFilter.mode(Colors.transparent, BlendMode.colorBurn)),
+                ColorFilter.mode(Colors.transparent, BlendMode.colorBurn)),
       ),
     ),
     placeholder: (context, url) => CircularProgressIndicator(),
     errorWidget: (context, url, error) => Icon(Icons.error),
   );
 }
+
 /// 可通过sql搜索下载列表历史
 /// ```
 /// CREATE TABLE `task` (
@@ -488,7 +470,6 @@ CachedNetworkImage cacheImage(url,{BoxFit fit,Alignment alignment}) {
 //   }
 //   return FlutterDownloader.loadTasks();
 // }
-
 
 /// 空
 bool empty(obj) {
