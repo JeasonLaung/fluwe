@@ -28,7 +28,6 @@ class _TestOverlayPageState extends State<TestOverlayPage> {
                 title: '提示窗',
                 onCancel: () {
                   showToast('取消');
-                  // consol
                 },
                 onConfirm: () {
                   showToast('确定');

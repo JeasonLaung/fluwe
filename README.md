@@ -1,3 +1,19 @@
+# 权限需求快速配置
+iOS 
+文件：项目根目录/ios/Runner/Info.plist:
+```cmd
+<key>NSPhotoLibraryUsageDescription</key>
+<string>开启存储权限，用于存储文件或图片</string>
+```
+
+Android 
+文件位置：/android/app/src/main/AndroidManifest.xml
+```cmd
+<!-- 文件写入权限Permission for usage of external storage -->
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+```
+
+
 
 # 快速使用
 `框架懒人命令` `main.dart`
@@ -25,7 +41,13 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 ```
+
+
+
+
+
 路由快速配置 `/routes/routes.dart`
 ```dart
 import 'package:fluwe/fluwe.dart';

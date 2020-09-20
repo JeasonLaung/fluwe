@@ -1,5 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
+// import 'package:logger/logger.dart';
 import '../helpers/helpers.dart';
 import '../options/options.dart';
 import '../common/fluwe.dart';
@@ -163,8 +164,8 @@ class Router {
         }
       }
     } catch (e) {
-      // print(e);
-      Logger().i(e);
+      print(e);
+      // Logger().i(e);
     }
   }
 
@@ -227,11 +228,28 @@ class Router {
 
   /// 创建一个route
   static Route createRoute(Widget page, {RouteSettings settings}) {
-    return MaterialPageRoute(
-      settings: settings,
-      builder: (BuildContext context) {
-        return page;
-      },
-    );
+    // return MaterialPageRoute(
+    //   settings: settings,
+    //   builder: (BuildContext context) {
+    //     return page;
+    //   },
+    // );
+    return CupertinoPageRoute(
+        settings: settings,
+        builder: (context) {
+          return page;
+        });
+    // return PageRouteBuilder(pageBuilder: (BuildContext context,
+    //     Animation<double> animation, Animation<double> secondaryAnimation) {
+    //   return page;
+    // }, transitionsBuilder: (
+    //   BuildContext context,
+    //   Animation<double> animation,
+    //   Animation<double> secondaryAnimation,
+    //   Widget child,
+    // ) {
+    //   // 添加一个平移动画
+    //   return createTransition(animation, child);
+    // });
   }
 }
