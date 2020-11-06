@@ -24,16 +24,16 @@ Future showModal({
       confirmText: confirmText,
       cancelText: cancelText,
       onCancel: () {
+        closeModal();
         if (onCancel is Function) {
           onCancel();
         }
-        closeModal();
       },
       onConfirm: () {
+        closeModal();
         if (onCancel is Function) {
           onConfirm();
         }
-        closeModal();
       },
       title: title,
       content: content,
