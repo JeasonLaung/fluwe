@@ -14,17 +14,16 @@ Future showModal({String title,String content,Widget child,Function onConfirm, F
     child: ModalWidget(
       child: child,
       onCancel: () async{
+        closeModal();
         if (onCancel is Function) {
           await onCancel();
         }
-        closeModal();
-        
       },
       onConfirm: () async{
+        closeModal();
         if (onCancel is Function) {
           await onConfirm();
         }
-        closeModal();
       },
       title: title,
       content: content,
