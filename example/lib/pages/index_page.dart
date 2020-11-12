@@ -38,8 +38,8 @@ class _IndexPageState extends State<IndexPage> {
               },
             )
           ],
-        )
-      )
+        ),
+      ),
     );
   }
 }

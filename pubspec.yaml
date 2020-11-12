@@ -23,11 +23,8 @@ dependencies:
   # 分享
   share: ^0.6.3+5
 
-  # 本地缓存
-  shared_preferences: ^0.5.6
-
   # 软件、页面启动器
-  url_launcher: ^5.4.1
+  url_launcher: ^5.7.2
 
   # 获取包信息
   package_info: ^0.4.0+13
@@ -48,8 +45,6 @@ dependencies:
 
   # 原生toast
   fluttertoast: ^3.1.3
-  #请求库
-  dio: ^3.0.8
 
   #权限
   # permission_handler: ^4.1.0

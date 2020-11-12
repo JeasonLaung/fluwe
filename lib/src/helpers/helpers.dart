@@ -2,13 +2,14 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 // import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:image_picker/image_picker.dart';
 // import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -18,14 +19,46 @@ import '../common/fluwe.dart';
 
 export '../overlay/overlay.dart';
 
+/// 保存图片到相册
+Future<bool> saveImage(String url) async {
+  try {
+    bool isSuccess = await GallerySaver.saveImage(url);
+    if (isSuccess) {
+      showToast("图片已保存至相册");
+      return isSuccess;
+    } else {
+      showToast("图片保存失败");
+      throw '保存图片失败';
+    }
+  } catch (e) {
+    rethrow;
+  }
+}
+
+/// 保存视频到相册
+Future<bool> saveVideo(String url) async {
+  try {
+    bool isSuccess = await GallerySaver.saveVideo(url);
+    if (isSuccess) {
+      showToast("视频已保存至相册");
+      return isSuccess;
+    } else {
+      showToast("视频保存失败");
+      throw '保存视频失败';
+    }
+  } catch (e) {
+    rethrow;
+  }
+}
+
 /// 原生吐司函数
 Future showToast(String msg,
     {Toast toastLength,
     int timeInSecForIos = 1,
-    double fontSize = 16.0,
+    double fontSize = 13.0,
     ToastGravity gravity = ToastGravity.CENTER,
-    Color backgroundColor,
-    Color textColor}) async {
+    Color backgroundColor = Colors.black87,
+    Color textColor = Colors.white}) async {
   Fluttertoast.cancel();
   return Fluttertoast.showToast(
       msg: msg,
@@ -51,22 +84,22 @@ Future closeToast() async {
 ///
 /// 拨打电话
 ///
-Future makePhoneCall({@required phoneNumber}) async {
-  openBrower(url: 'tel:$phoneNumber');
+Future<bool> makePhoneCall({@required String phoneNumber}) async {
+  return await openBrower(url: 'tel:$phoneNumber');
 }
 
 ///
 /// 发短信
 ///
-Future sendMessage({@required phoneNumber}) async {
-  openBrower(url: 'sms:' + phoneNumber);
+Future<bool> sendMessage({@required phoneNumber}) async {
+  return await openBrower(url: 'sms:' + phoneNumber);
 }
 
 ///
 /// 发短信
 ///
-Future sendMail({@required email, String body = ''}) async {
-  openBrower(url: 'mailto:' + email + '?subject=' + body);
+Future<bool> sendMail({@required email, String body = ''}) async {
+  return await openBrower(url: 'mailto:' + email + '?subject=' + body);
 }
 
 ///
@@ -78,7 +111,7 @@ Future<File> chooseImage(
     {ChooseImageType type = ChooseImageType.photo,
 
     /// 是否压缩
-    bool compress = false}) async {
+    int compress = 0}) async {
   if (chooseImageBlock == true) {
     throw '不能同时打开两次选择文件';
   }
@@ -101,8 +134,9 @@ Future<File> chooseImage(
   if (file == null) {
     throw '没有选图片';
   } else {
-    if (compress) {
-      file = await compressImage(file, output: CompressOutputType.file);
+    if (compress != 0) {
+      file = await compressImage(file,
+          output: CompressOutputType.file, quality: compress);
     }
     return file;
   }
@@ -135,8 +169,7 @@ Future openApp({@required OpenAppType appName}) async {
 ///
 Future<bool> openBrower({@required url}) async {
   if (await canLaunch(url.toString())) {
-    await launch(url.toString());
-    return true;
+    return await launch(url.toString());
   } else {
     throw 'Could not launch $url.toString()';
   }
@@ -191,74 +224,6 @@ Future share(String text, {String subject, Rect sharePositonOrigin}) async {
   return await Share.share(text,
       subject: subject, sharePositionOrigin: sharePositonOrigin);
 }
-
-///
-/// 缓存
-///
-SharedPreferences cache = Fluwe.cache;
-
-///
-/// APP权限调起
-///
-// Future<bool> openSetting() async{
-//   return await PermissionHandler().openAppSettings();
-// }
-
-///
-/// 处理权限(保证打开状态)
-///
-// Future<bool> requestPermission(permission, {Function fail}) async{
-//   PermissionHandler permissionHandler = PermissionHandler();
-//   PermissionStatus status;
-//   Map<PermissionGroup, PermissionStatus> statuss = {};
-//   if (permission is PermissionGroup) {
-//     /// 检测授权
-//     status = await permissionHandler.checkPermissionStatus(permission);
-
-//     print(status);
-//     /// denied（苹果已经授权的话会直接返回这个denied）   granted为（ios第一次授权成功 或 安卓授权打开状态返回）
-//     if (status == PermissionStatus.denied || status == PermissionStatus.granted) {
-//       return true;
-//     } else {
-//       statuss = await permissionHandler.requestPermissions([permission]);
-//       /// 第一次授权
-//       if (statuss[permission] == PermissionStatus.granted) {
-//         return true;
-//       } else {
-//         if (fail is Function) {
-//           fail();
-//         }
-//         throw false;
-//       }
-//     }
-//   } else if(permission is List<PermissionGroup>) {
-//     List<PermissionGroup> notPermissions = [];
-//     print(permission);
-//     permission.map((item) async{
-//       status = await permissionHandler.checkPermissionStatus(item);
-//       print(status);
-//       /// denied（苹果已经授权的话会直接返回这个denied）   granted为（ios第一次授权成功 或 安卓授权打开状态返回）
-//       if (status == PermissionStatus.denied || status == PermissionStatus.granted) {
-//       } else {
-//         notPermissions.add(item);
-//       }
-//     });
-//     print(notPermissions);
-
-//     statuss = await permissionHandler.requestPermissions(notPermissions);
-//     statuss.map((key, val) {
-//       if (val == PermissionStatus.granted) {
-//       } else {
-//         if (fail is Function) {
-//           fail();
-//         }
-//         throw false;
-//       }
-//     });
-//     return true;
-//   }
-//   throw false;
-// }
 
 enum CompressOutputType {
   /// 二进制文件,（返回）
@@ -441,9 +406,17 @@ CachedNetworkImage cacheImage(url, {BoxFit fit, Alignment alignment}) {
                 ColorFilter.mode(Colors.transparent, BlendMode.colorBurn)),
       ),
     ),
-    placeholder: (context, url) => CircularProgressIndicator(),
+    placeholder: (context, url) => Container(),
     errorWidget: (context, url, error) => Icon(Icons.error),
   );
+}
+
+///
+/// 缓存图片
+///
+CachedNetworkImageProvider cacheImageProvider(url,
+    {double scale = 1, Map<String, String> headers = const {}}) {
+  return CachedNetworkImageProvider(url, scale: scale, headers: headers);
 }
 
 /// 可通过sql搜索下载列表历史

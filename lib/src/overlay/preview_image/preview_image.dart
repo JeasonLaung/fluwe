@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../../animation/fade_in.dart';
@@ -125,12 +127,14 @@ class PreviewImageWidgetState extends State<PreviewImageWidget> {
                 /// 按比例
                 _scale = details.scale * _lastScale;
                 if (_scale > 1.0) {
-                  if (_scrollController != null) {
-                    _scrollController.jumpTo(_x * _scale);
-                  } else {
-                    _scrollController =
-                        ScrollController(initialScrollOffset: _x);
-                  }
+                  try {
+                    if (_scrollController != null) {
+                      _scrollController.jumpTo(_x * _scale);
+                    } else {
+                      _scrollController =
+                          ScrollController(initialScrollOffset: _x);
+                    }
+                  } catch (e) {}
                 } else {
                   _scrollController?.dispose();
                   _scrollController = null;
@@ -154,23 +158,41 @@ class PreviewImageWidgetState extends State<PreviewImageWidget> {
                             scrollDirection: Axis.horizontal,
                             controller: _scrollController,
                             child: Container(
-                                child: CachedNetworkImage(
-                              fit: BoxFit.fitWidth,
-                              width: MediaQuery.of(context).size.width * _scale,
-                              imageUrl: widget.images[index],
-                              placeholder: (context, url) => Container(),
-                              errorWidget: (context, url, error) =>
-                                  Icon(Icons.error),
-                            )),
+                              child: (!widget.images[index].startsWith('http')
+                                  ? Image.file(
+                                      File(widget.images[index]),
+                                      width: MediaQuery.of(context).size.width *
+                                          _scale,
+                                      fit: BoxFit.fitWidth,
+                                    )
+                                  : CachedNetworkImage(
+                                      fit: BoxFit.fitWidth,
+                                      width: MediaQuery.of(context).size.width *
+                                          _scale,
+                                      imageUrl: widget.images[index],
+                                      placeholder: (context, url) =>
+                                          Container(),
+                                      errorWidget: (context, url, error) =>
+                                          Icon(Icons.error),
+                                    )),
+                            ),
                           )
-                        : CachedNetworkImage(
-                            fit: BoxFit.fitWidth,
-                            width: MediaQuery.of(context).size.width * _scale,
-                            imageUrl: widget.images[index],
-                            placeholder: (context, url) => Container(),
-                            errorWidget: (context, url, error) =>
-                                Icon(Icons.error),
-                          ),
+                        : (!widget.images[index].startsWith('http')
+                            ? Image.file(
+                                File(widget.images[index]),
+                                width:
+                                    MediaQuery.of(context).size.width * _scale,
+                                fit: BoxFit.fitWidth,
+                              )
+                            : CachedNetworkImage(
+                                fit: BoxFit.fitWidth,
+                                width:
+                                    MediaQuery.of(context).size.width * _scale,
+                                imageUrl: widget.images[index],
+                                placeholder: (context, url) => Container(),
+                                errorWidget: (context, url, error) =>
+                                    Icon(Icons.error),
+                              )),
                   )));
         });
 

@@ -78,7 +78,7 @@ class Router {
 
   /// `各种路由操作`
   /// ```
-  /// Router.navigateBack(
+  ///   Router.navigateBack(
   ///   delta: 2,
   ///   result: '12345689'
   /// );
@@ -103,7 +103,7 @@ class Router {
 
   /// `跳转页面`
   /// ```
-  /// Router.navigateTo(
+  ///   Router.navigateTo(
   ///   page: HomePage(
   ///     id: '123456'
   ///   ),
@@ -113,7 +113,7 @@ class Router {
   /// 或
   ///
   /// ```
-  /// Router.navigateTo(
+  ///   Router.navigateTo(
   ///   url: '/login',
   ///   agruments: {
   ///     'uid': '123465'
@@ -127,6 +127,7 @@ class Router {
       Object params = const {},
       TransitionType transition}) async {
     /// loading表示(防止loading乱占用导航问题关闭他)
+    assert(navigatorKey != null, '请在main先初始化Fluwe');
     await navigateBack(isLoading: true);
 
     try {
@@ -171,7 +172,7 @@ class Router {
 
   /// `重载页面`
   /// ```
-  /// Router.reLaunch(
+  ///   Router.reLaunch(
   ///   page: HomePage(
   ///     id: '123456'
   ///   ),
@@ -193,7 +194,7 @@ class Router {
 
   /// `重载页面`
   /// ```
-  /// Router.redirect(
+  ///   Router.redirect(
   ///   page: HomePage(
   ///     id: '123456'
   ///   ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:fluwe/src/helpers/helpers.dart';
 
 final double _leftPadding = 18.0;
 final double _topPadding = 12.0;
@@ -12,21 +12,22 @@ class ActionSheetWidget extends StatefulWidget {
   final Function(int index) onChange;
   final List<ActionsheetItem> childer;
 
-  ActionSheetWidget({
-    key,
-    this.title,
-    this.maskClosable,
-    this.cancelButton,
-    this.close,
-    this.onChange,
-    this.childer
-  }) : super(key: key);
+  ActionSheetWidget(
+      {key,
+      this.title,
+      this.maskClosable,
+      this.cancelButton,
+      this.close,
+      this.onChange,
+      this.childer})
+      : super(key: key);
 
   @override
   ActionSheetWidgetState createState() => ActionSheetWidgetState();
 }
 
-class ActionSheetWidgetState extends State<ActionSheetWidget> with TickerProviderStateMixin {
+class ActionSheetWidgetState extends State<ActionSheetWidget>
+    with TickerProviderStateMixin {
   final GlobalKey _boxKey = GlobalKey();
   // 容器高度
   double _boxHeight = 0;
@@ -44,7 +45,7 @@ class ActionSheetWidgetState extends State<ActionSheetWidget> with TickerProvide
     super.initState();
     _controller = AnimationController(
       duration: const Duration(milliseconds: 150),
-      vsync: this
+      vsync: this,
     );
     WidgetsBinding.instance.addPostFrameCallback(getBoxHeight);
   }
@@ -65,22 +66,12 @@ class ActionSheetWidgetState extends State<ActionSheetWidget> with TickerProvide
   void createAnimate() {
     // 内容动画
     top = Tween<double>(begin: _boxHeight, end: 0)
-      .animate(
-        CurvedAnimation(
-          parent: _controller,
-          curve: Curves.decelerate
-        )
-      )
-      ..addStatusListener(animateEnd);
+        .animate(CurvedAnimation(parent: _controller, curve: Curves.decelerate))
+          ..addStatusListener(animateEnd);
 
     // 遮罩层透明动画
-    opacity = Tween<double>(begin: 0.0, end: 1.0)
-      .animate(
-        CurvedAnimation(
-          parent: _controller,
-          curve: Curves.decelerate
-        )
-      );
+    opacity = Tween<double>(begin: 0.0, end: 1.0).animate(
+        CurvedAnimation(parent: _controller, curve: Curves.decelerate));
   }
 
   // 开始动画
@@ -116,19 +107,15 @@ class ActionSheetWidgetState extends State<ActionSheetWidget> with TickerProvide
   // 渲染title
   Widget renderTitle() {
     return SizedBox(
-      height: 50.0,
-      child: Align(
-        alignment: Alignment.center,
-        child: DefaultTextStyle(
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 17.0,
-            fontWeight: FontWeight.w500
-          ),
-          child: toTextWidget(widget.title, 'title')
-        )
-      )
-    );
+        height: 50.0,
+        child: Align(
+            alignment: Alignment.center,
+            child: DefaultTextStyle(
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 17.0,
+                    fontWeight: FontWeight.w500),
+                child: toTextWidget(widget.title, 'title'))));
   }
 
   // 取消按钮
@@ -139,23 +126,20 @@ class ActionSheetWidgetState extends State<ActionSheetWidget> with TickerProvide
         onTap: close,
         child: DecoratedBox(
           decoration: BoxDecoration(
-            border: Border(top: BorderSide(width: 6.0, color: Color(0xffEFEFF4)))
-          ),
+              border: Border(
+                  top: BorderSide(width: 6.0, color: Color(0xffEFEFF4)))),
           child: SizedBox(
             height: 55.0,
             child: Align(
               alignment: Alignment.center,
               child: DefaultTextStyle(
-                style: TextStyle(
-                  fontSize: 16.0,
-                  color: Colors.black
-                ),
-                child: toTextWidget(widget.cancelButton, 'cancelButton')
-              )
-            )
-          )
-        )
-      )
+                style: TextStyle(fontSize: 16.0, color: Colors.black),
+                child: toTextWidget(widget.cancelButton, 'cancelButton'),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -191,26 +175,29 @@ class ActionSheetWidgetState extends State<ActionSheetWidget> with TickerProvide
                 offset: Offset(0, top == null ? 10000.0 : top.value),
                 child: DecoratedBox(
                   key: _boxKey,
-                  decoration: BoxDecoration(
-                    color: Colors.white
-                  ),
+                  decoration: BoxDecoration(color: Colors.white),
                   child: Material(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: list
-                    )
-                  )
-                )
-              )
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(rpx(13)),
+                        topRight: Radius.circular(rpx(13)),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: list,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             )
-          ]
+          ],
         );
-      }
+      },
     );
   }
 }
-
 
 // 字符串转Widget
 Widget toTextWidget(content, key) {
@@ -227,10 +214,9 @@ Widget toTextWidget(content, key) {
   return content;
 }
 
-
-
-
-List<Widget> initChilder(List<ActionsheetItem> childer, onChange, Color borderColor, { Alignment align = Alignment.center }) {
+List<Widget> initChilder(
+    List<ActionsheetItem> childer, onChange, Color borderColor,
+    {Alignment align = Alignment.center}) {
   // 列表
   final List<Widget> list = [];
 
@@ -241,48 +227,34 @@ List<Widget> initChilder(List<ActionsheetItem> childer, onChange, Color borderCo
       list.add(Divider(height: 1, color: borderColor));
     }
 
-    list.add(
-      InkWell(
+    list.add(InkWell(
         onTap: () {
           onChange(index);
         },
         child: DecoratedBox(
-          decoration: BoxDecoration(),
-          child: Align(
-            alignment: align,
-            child: SizedBox(
-              child: Padding(
-                padding: EdgeInsets.only(
-                  top: _topPadding,
-                  right: _leftPadding,
-                  bottom: _topPadding,
-                  left: _leftPadding
-                ),
-                child: DefaultTextStyle(
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    color: Colors.black
-                  ),
-                  child: toTextWidget(childer[index].label, 'childer中的值')
-                )
-              )
-            )
-          )
-        )
-      )
-    );
+            decoration: BoxDecoration(),
+            child: Align(
+                alignment: align,
+                child: SizedBox(
+                    child: Padding(
+                        padding: EdgeInsets.only(
+                            top: _topPadding,
+                            right: _leftPadding,
+                            bottom: _topPadding,
+                            left: _leftPadding),
+                        child: DefaultTextStyle(
+                            style:
+                                TextStyle(fontSize: 16.0, color: Colors.black),
+                            child: toTextWidget(
+                                childer[index].label, 'childer中的值'))))))));
   }
 
   return list;
 }
 
-
 class ActionsheetItem {
   final label;
   final dynamic value;
 
-  ActionsheetItem({
-    @required this.label,
-    this.value
-  });
+  ActionsheetItem({@required this.label, this.value});
 }

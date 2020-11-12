@@ -3,17 +3,16 @@ import 'dart:async';
 import '../utils.dart';
 import 'modal.dart';
 
-Future showModal({
-  String title = '提示',
-  String content = '',
-  Widget child,
-  Function onConfirm, 
-  Function onCancel, 
-  String confirmText = '确定',
-  String cancelText = '取消'
-}) async{
+Future showModal(
+    {String title = '提示',
+    String content = '',
+    Widget child,
+    Function onConfirm,
+    Function onCancel,
+    String confirmText = '确定',
+    String cancelText = '取消'}) async {
   createOverlayEntry(
-    willPopCallback: () async{
+    willPopCallback: () async {
       if (onCancel is Function) {
         await onCancel();
       }
@@ -30,7 +29,7 @@ Future showModal({
         closeModal();
       },
       onConfirm: () {
-        if (onCancel is Function) {
+        if (onConfirm is Function) {
           onConfirm();
         }
         closeModal();
@@ -41,7 +40,7 @@ Future showModal({
   );
 }
 
-Future closeModal() async{
+Future closeModal() async {
   if (OverlayStateStates.lock == true) {
     Router.navigateBack();
   }

@@ -33,8 +33,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      navigatorKey: Router.navigatorKey,
-      onGenerateRoute: Router.onGenerateRoute,
+      navigatorKey:   Router.navigatorKey,
+      onGenerateRoute:   Router.onGenerateRoute,
       home: FluweApp(
         child: IndexPage(),
       )
@@ -119,7 +119,7 @@ https://github.com/allan-hx/flutter-weui
 ```Router.navigateBack```
 ``` dart
  /// 返回两页
- Router.navigateBack(
+   Router.navigateBack(
      /// 返回页数
    delta: 2,
    /// 发送到该页面的参数
@@ -131,7 +131,7 @@ https://github.com/allan-hx/flutter-weui
 
 ``` dart
    /// 跳转页面
-   Router.navigateTo(
+     Router.navigateTo(
      page: HomePage(
        id: '123456'
      ),
@@ -139,7 +139,7 @@ https://github.com/allan-hx/flutter-weui
    
    /// 或
   
-   Router.navigateTo(
+     Router.navigateTo(
      url: '/login',
      agruments: {
        'uid': '123465'
@@ -152,7 +152,7 @@ https://github.com/allan-hx/flutter-weui
 
 ``` dart
     /// 重定向页面`
-    Router.redirect(
+      Router.redirect(
         page: HomePage(
         id: '123456'
 
@@ -165,7 +165,7 @@ https://github.com/allan-hx/flutter-weui
 
 ``` dart
     /// 重重载页面`
-    Router.reLaunch(
+      Router.reLaunch(
         page: HomePage(
         id: '123456'
 

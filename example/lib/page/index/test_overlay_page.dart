@@ -70,6 +70,15 @@ class _TestOverlayPageState extends State<TestOverlayPage> {
           }),
           WeCell('原生分享', onTap: () {
             share('check out my website https://example.com');
+          }),
+          WeCell('弹出全局context的', onTap: () {
+            showDialog(
+                context: Fluwe.context,
+                builder: (context) {
+                  return Container(
+                    child: Text("测试"),
+                  );
+                });
           })
         ],
       ),

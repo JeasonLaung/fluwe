@@ -3,12 +3,10 @@ import 'package:fluwe/fluwe.dart';
 import 'page/index/index_page.dart';
 import 'routes/routes.dart';
 
-main() async{
+main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Fluwe.init(
-    routesConfig: Routes.config
-  );
+  await Fluwe.init(routesConfig: Routes.config);
   runApp(MyApp());
 }
 
@@ -16,11 +14,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      navigatorKey: Router.navigatorKey,
-      onGenerateRoute: Router.onGenerateRoute,
-      home: FluweApp(
-        child: IndexPage(),
-      )
-    );
+        navigatorKey: Router.navigatorKey,
+        onGenerateRoute: Router.onGenerateRoute,
+        home: FluweApp(
+          child: IndexPage(),
+        ));
   }
 }
