@@ -34,7 +34,7 @@ class _IndexPageState extends State<IndexPage> {
             RaisedButton(
               child: Text('下一页'),
               onPressed: () {
-                Router.navigateTo(page: IndexPage());
+                FluweRouter.navigateTo(page: IndexPage());
               },
             )
           ],

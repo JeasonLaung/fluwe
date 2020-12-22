@@ -14,8 +14,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        navigatorKey: Router.navigatorKey,
-        onGenerateRoute: Router.onGenerateRoute,
+        navigatorKey: FluweRouter.navigatorKey,
+        onGenerateRoute: FluweRouter.onGenerateRoute,
         home: FluweApp(
           child: IndexPage(),
         ));

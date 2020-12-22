@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import '../../router/router.dart';
 import '../action_sheet/action_sheet.dart';
 import '../../overlay/utils.dart';
 
@@ -14,7 +15,7 @@ showActionSheet(
       child: ActionSheetWidget(
         cancelButton: '取消',
         onChange: (int index) {
-          Router.navigateBack();
+          FluweRouter.navigateBack();
           if (onChange is Function) {
             return onChange(
               itemList[index] is Map
@@ -24,10 +25,10 @@ showActionSheet(
           }
         },
         close: () async {
+          FluweRouter.navigateBack();
           if (onCancel is Function) {
             await onCancel();
           }
-          Router.navigateBack();
         },
         childer: List.generate(itemList.length, (index) {
           if (itemList[index] is Map) {

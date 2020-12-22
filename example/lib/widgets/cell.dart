@@ -55,7 +55,7 @@ class WeCell extends StatelessWidget {
               return onTap();
             }
             if (page != null) {
-              return Router.navigateTo(page: page, url: url);
+              return FluweRouter.navigateTo(page: page, url: url);
             }
           },
           child: Padding(

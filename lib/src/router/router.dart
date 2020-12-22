@@ -10,6 +10,11 @@ import '../common/fluwe.dart';
 ///  路由管理器
 ///
 /// -----------------------------
+/// 改变种类
+enum RouterChangeType {
+  material,
+  cupertino,
+}
 
 // 用法
 // Router
@@ -36,7 +41,7 @@ enum TransitionType { fadeIn }
 ///
 /// 路由操作
 ///
-class Router {
+class FluweRouter {
   /// 导航器全局key
   static GlobalKey<NavigatorState> navigatorKey;
 
@@ -78,7 +83,7 @@ class Router {
 
   /// `各种路由操作`
   /// ```
-  ///   Router.navigateBack(
+  ///   FluweRouter.navigateBack(
   ///   delta: 2,
   ///   result: '12345689'
   /// );
@@ -103,7 +108,7 @@ class Router {
 
   /// `跳转页面`
   /// ```
-  ///   Router.navigateTo(
+  ///   FluweRouter.navigateTo(
   ///   page: HomePage(
   ///     id: '123456'
   ///   ),
@@ -113,7 +118,7 @@ class Router {
   /// 或
   ///
   /// ```
-  ///   Router.navigateTo(
+  ///   FluweRouter.navigateTo(
   ///   url: '/login',
   ///   agruments: {
   ///     'uid': '123465'
@@ -124,6 +129,7 @@ class Router {
       {Widget page,
       RouterType type = RouterType.navigateTo,
       String url,
+      RouterChangeType changeType = RouterChangeType.cupertino,
       Object params = const {},
       TransitionType transition}) async {
     /// loading表示(防止loading乱占用导航问题关闭他)
@@ -132,7 +138,7 @@ class Router {
 
     try {
       if (page != null) {
-        Route pushPage = createRoute(page);
+        Route pushPage = createRoute(page, changeType: changeType);
 
         /// 记录为当前路由
         currentRoute = pushPage;
@@ -172,7 +178,7 @@ class Router {
 
   /// `重载页面`
   /// ```
-  ///   Router.reLaunch(
+  ///   FluweRouter.reLaunch(
   ///   page: HomePage(
   ///     id: '123456'
   ///   ),
@@ -194,7 +200,7 @@ class Router {
 
   /// `重载页面`
   /// ```
-  ///   Router.redirect(
+  ///   FluweRouter.redirect(
   ///   page: HomePage(
   ///     id: '123456'
   ///   ),
@@ -228,18 +234,28 @@ class Router {
   }
 
   /// 创建一个route
-  static Route createRoute(Widget page, {RouteSettings settings}) {
+  static Route createRoute(Widget page,
+      {RouteSettings settings, changeType = RouterChangeType.cupertino}) {
     // return MaterialPageRoute(
     //   settings: settings,
     //   builder: (BuildContext context) {
     //     return page;
     //   },
     // );
-    return CupertinoPageRoute(
-        settings: settings,
-        builder: (context) {
-          return page;
-        });
+    if (changeType == RouterChangeType.cupertino) {
+      return CupertinoPageRoute(
+          settings: settings,
+          builder: (context) {
+            return page;
+          });
+    } else {
+      return MaterialPageRoute(
+          settings: settings,
+          builder: (context) {
+            return page;
+          });
+    }
+
     // return PageRouteBuilder(pageBuilder: (BuildContext context,
     //     Animation<double> animation, Animation<double> secondaryAnimation) {
     //   return page;

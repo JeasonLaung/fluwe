@@ -33,8 +33,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      navigatorKey:   Router.navigatorKey,
-      onGenerateRoute:   Router.onGenerateRoute,
+      navigatorKey:   FluweRouter.navigatorKey,
+      onGenerateRoute:   FluweRouter.onGenerateRoute,
       home: FluweApp(
         child: IndexPage(),
       )
@@ -111,15 +111,15 @@ https://github.com/allan-hx/flutter-weui
 
 ## 请求篇API
 ### `所有请求函数不建议放在助手函数中使用`
-```Router.navigateBack```
+```FluweRouter.navigateBack```
 
 
 ## 路由篇API
 ### `所有路由函数不建议放在助手函数中使用`
-```Router.navigateBack```
+```FluweRouter.navigateBack```
 ``` dart
  /// 返回两页
-   Router.navigateBack(
+   FluweRouter.navigateBack(
      /// 返回页数
    delta: 2,
    /// 发送到该页面的参数
@@ -127,11 +127,11 @@ https://github.com/allan-hx/flutter-weui
 );
 ```
 
-```Router.navigateTo```
+```FluweRouter.navigateTo```
 
 ``` dart
    /// 跳转页面
-     Router.navigateTo(
+     FluweRouter.navigateTo(
      page: HomePage(
        id: '123456'
      ),
@@ -139,7 +139,7 @@ https://github.com/allan-hx/flutter-weui
    
    /// 或
   
-     Router.navigateTo(
+     FluweRouter.navigateTo(
      url: '/login',
      agruments: {
        'uid': '123465'
@@ -148,11 +148,11 @@ https://github.com/allan-hx/flutter-weui
  
   ```
 
-```Router.redirect```
+```FluweRouter.redirect```
 
 ``` dart
     /// 重定向页面`
-      Router.redirect(
+      FluweRouter.redirect(
         page: HomePage(
         id: '123456'
 
@@ -161,11 +161,11 @@ https://github.com/allan-hx/flutter-weui
 
 
 
-```Router.reLaunch```
+```FluweRouter.reLaunch```
 
 ``` dart
     /// 重重载页面`
-      Router.reLaunch(
+      FluweRouter.reLaunch(
         page: HomePage(
         id: '123456'
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import '../utils.dart';
 import 'modal.dart';
+import '../../router/router.dart';
 
 Future showModal(
     {String title = '提示',
@@ -23,16 +24,16 @@ Future showModal(
       confirmText: confirmText,
       cancelText: cancelText,
       onCancel: () {
+        closeModal();
         if (onCancel is Function) {
           onCancel();
         }
-        closeModal();
       },
       onConfirm: () {
+        closeModal();
         if (onConfirm is Function) {
           onConfirm();
         }
-        closeModal();
       },
       title: title,
       content: content,
@@ -42,6 +43,6 @@ Future showModal(
 
 Future closeModal() async {
   if (OverlayStateStates.lock == true) {
-    Router.navigateBack();
+    FluweRouter.navigateBack();
   }
 }

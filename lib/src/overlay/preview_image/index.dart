@@ -1,7 +1,7 @@
 import 'preview_image.dart';
 import 'dart:async';
 import '../utils.dart';
-
+import '../../router/router.dart';
 import '../../helpers/helpers.dart';
 // import 'package:path_provider/path_provider.dart';
 import 'package:gallery_saver/gallery_saver.dart';
@@ -51,7 +51,7 @@ Future previewImage(
           });
     },
     maskClick: () {
-      Router.navigateBack();
+      FluweRouter.navigateBack();
     },
     images: urls,
   ));

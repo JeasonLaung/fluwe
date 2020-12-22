@@ -1,12 +1,34 @@
 import 'package:flutter/material.dart';
 
+enum ToastPosition {
+  top,
+  bottom,
+  center,
+}
+
 class ToastWidget extends StatelessWidget {
   final String title;
-  ToastWidget(this.title);
+  final ToastPosition position;
+  ToastWidget(this.title, {this.position = ToastPosition.bottom});
   @override
   Widget build(BuildContext context) {
+    double topHeight = 0;
+    switch (position) {
+      case ToastPosition.bottom:
+        topHeight = MediaQuery.of(context).size.height * 0.7;
+        break;
+      case ToastPosition.center:
+        topHeight = MediaQuery.of(context).size.height * 0.5;
+        break;
+      case ToastPosition.top:
+        topHeight = MediaQuery.of(context).size.height * 0.3;
+        break;
+      default:
+        topHeight = MediaQuery.of(context).size.height * 0.7;
+        break;
+    }
     return Positioned(
-      top: MediaQuery.of(context).size.height * 0.7,
+      top: topHeight,
       child: Material(
         color: Colors.transparent,
         child: SizedBox(

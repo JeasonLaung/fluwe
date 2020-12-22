@@ -393,8 +393,14 @@ Future<String> _findLocalPath() async {
 ///
 /// 缓存图片
 ///
-CachedNetworkImage cacheImage(url, {BoxFit fit, Alignment alignment}) {
+CachedNetworkImage cacheImage(url,
+    {BoxFit fit,
+    Alignment alignment,
+    double width = 200,
+    double height = 200}) {
   return CachedNetworkImage(
+    width: width,
+    height: height,
     imageUrl: url,
     imageBuilder: (context, imageProvider) => Container(
       decoration: BoxDecoration(

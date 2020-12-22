@@ -1,18 +1,17 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../router/router.dart';
-export '../router/router.dart';
 
 BuildContext get overlayCurrentContext {
-  return Router.navigatorKey.currentContext;
+  return FluweRouter.navigatorKey.currentContext;
 }
 
 NavigatorState get overlayCurrentState {
-  return Router.navigatorKey.currentState;
+  return FluweRouter.navigatorKey.currentState;
 }
 
 OverlayState get overlayCurrent {
-  return Router.navigatorKey.currentState.overlay;
+  return FluweRouter.navigatorKey.currentState.overlay;
 }
 
 /// ----------------------

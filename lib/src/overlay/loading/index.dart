@@ -1,6 +1,6 @@
 import 'dart:async';
 import '../../common/fluwe.dart';
-
+import '../../router/router.dart';
 import '../utils.dart';
 import 'loading.dart';
 
@@ -41,5 +41,5 @@ Future showLoading(
 
 /// 关闭loading弹出层
 Future closeLoading() async {
-  Router.navigateBack(isLoading: true);
+  FluweRouter.navigateBack(isLoading: true);
 }

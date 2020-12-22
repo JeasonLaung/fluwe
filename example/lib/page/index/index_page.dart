@@ -36,31 +36,31 @@ class _IndexPageState extends State<IndexPage> {
             WeCell(
               '无context路由',
               onTap: () {
-                Router.navigateTo(page: TestRouterPage());
+                FluweRouter.navigateTo(page: TestRouterPage());
               },
             ),
             WeCell(
               '无context弹出层',
               onTap: () {
-                Router.navigateTo(page: TestOverlayPage());
+                FluweRouter.navigateTo(page: TestOverlayPage());
               },
             ),
             WeCell(
               '文件操作页面',
               onTap: () {
-                Router.navigateTo(page: TestFilePage());
+                FluweRouter.navigateTo(page: TestFilePage());
               },
             ),
             WeCell(
               '布局',
               onTap: () {
-                Router.navigateTo(page: TestViewPage());
+                FluweRouter.navigateTo(page: TestViewPage());
               },
             ),
             WeCell(
               '权限',
               onTap: () {
-                Router.navigateTo(page: TestAuthPage());
+                FluweRouter.navigateTo(page: TestAuthPage());
               },
             ),
           ],

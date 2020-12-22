@@ -38,13 +38,13 @@ class Fluwe {
 
   static Future init({List<RouteOptions> routesConfig = const []}) async {
     /// 路由配置
-    Router.configs = routesConfig;
+    FluweRouter.configs = routesConfig;
 
     ///
     /// 路由信息
     ///
     /// 整个app的最重要的key，不要删除
-    Router.navigatorKey = GlobalKey();
+    FluweRouter.navigatorKey = GlobalKey();
 
     ///
     ///

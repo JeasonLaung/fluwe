@@ -32,7 +32,7 @@ class _TestRouterPageState extends State<TestRouterPage> {
                   WeCell(
                     '测试跳转',
                     onTap: () {
-                      Router.navigateTo(
+                      FluweRouter.navigateTo(
                           page: TestRouterPage(
                         pageCount: widget.pageCount + 1,
                       )).then((val) {
@@ -42,11 +42,11 @@ class _TestRouterPageState extends State<TestRouterPage> {
                     },
                   ),
                   WeCell('测试返回1层', onTap: () {
-                    Router.navigateBack(
+                    FluweRouter.navigateBack(
                         delta: 1, result: '我从${widget.pageCount}页面返回过来的');
                   }),
                   WeCell('测试返回3层', onTap: () {
-                    Router.navigateBack(
+                    FluweRouter.navigateBack(
                         delta: 3, result: '我从${widget.pageCount}页面返回过来的');
                   }),
                 ],
@@ -57,7 +57,7 @@ class _TestRouterPageState extends State<TestRouterPage> {
                   WeCell(
                     '用url模式跳转带参数的一页',
                     onTap: () {
-                      Router.navigateTo(
+                      FluweRouter.navigateTo(
                           url: '/test_router',
                           params: {'id': widget.pageCount + 1}).then((val) {
                         /// 从前一个页面返回的值输出
@@ -68,7 +68,7 @@ class _TestRouterPageState extends State<TestRouterPage> {
                   WeCell(
                     '用url模式重定向一个页面',
                     onTap: () {
-                      Router.redirect(
+                      FluweRouter.redirect(
                           url: '/test_router',
                           params: {'id': widget.pageCount + 1}).then((val) {
                         /// 从前一个页面返回的值输出
@@ -79,7 +79,7 @@ class _TestRouterPageState extends State<TestRouterPage> {
                   WeCell(
                     '全部页面关闭并打开一个页面',
                     onTap: () {
-                      Router.reLaunch(
+                      FluweRouter.reLaunch(
                           url: '/test_router',
                           params: {'id': widget.pageCount + 1}).then((val) {
                         /// 从前一个页面返回的值输出
