@@ -26,7 +26,7 @@ Future previewImage(
     onLongPress: (ind) {
       showActionSheet(
           itemList: ['保存图片'],
-          onChange: (val) async {
+          success: (val) async {
             if (val == '保存图片') {
               // 不能同时下载不然闪退，所以要等一等
               showLoading(canBack: false);

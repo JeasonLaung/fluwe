@@ -1,26 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:fluwe/fluwe.dart';
+import 'package:fluwe/src/common/fluwe.dart';
 import 'package:fluwe/src/helpers/helpers.dart';
 
 final double _leftPadding = 18.0;
 final double _topPadding = 12.0;
+
+enum ActionSheetType {
+  success,
+  fail,
+}
 
 class ActionSheetWidget extends StatefulWidget {
   final dynamic title;
   final bool maskClosable;
   final dynamic cancelButton;
   final Function() close;
-  final Function(int index) onChange;
+  final Function() fail;
+  final Function(int index) success;
   final List<ActionsheetItem> childer;
 
-  ActionSheetWidget(
-      {key,
-      this.title,
-      this.maskClosable,
-      this.cancelButton,
-      this.close,
-      this.onChange,
-      this.childer})
-      : super(key: key);
+  ActionSheetWidget({
+    key,
+    this.title,
+    this.maskClosable,
+    this.cancelButton,
+    this.close,
+    this.success,
+    this.fail,
+    this.childer,
+  }) : super(key: key);
 
   @override
   ActionSheetWidgetState createState() => ActionSheetWidgetState();
@@ -65,9 +74,13 @@ class ActionSheetWidgetState extends State<ActionSheetWidget>
   // 创建动画
   void createAnimate() {
     // 内容动画
-    top = Tween<double>(begin: _boxHeight, end: 0)
-        .animate(CurvedAnimation(parent: _controller, curve: Curves.decelerate))
-          ..addStatusListener(animateEnd);
+    top = Tween<double>(begin: _boxHeight, end: 0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.decelerate,
+      ),
+    );
+    // ..addStatusListener(animateEnd);
 
     // 遮罩层透明动画
     opacity = Tween<double>(begin: 0.0, end: 1.0).animate(
@@ -80,42 +93,54 @@ class ActionSheetWidgetState extends State<ActionSheetWidget>
   }
 
   // 动画结束
-  void animateEnd(state) {
-    if (state == AnimationStatus.dismissed) {
-      if (_index == null) {
-        widget.close();
-      } else {
-        widget.onChange(_index);
-      }
-      // 销毁
-      _controller.dispose();
-    }
-  }
+  // void animateEnd(state) {
+  //   if (state == AnimationStatus.dismissed) {
+  //     if (_index == null) {
+  //       widget.close();
+  //     } else {
+  //       widget.success(_index);
+  //     }
+  //     // 销毁
+  //     _controller.dispose();
+  //   }
+  // }
 
   // 取消
-  void close() {
+  void close({
+    // 有效种类或者无效种类
+    ActionSheetType type = ActionSheetType.fail,
+  }) {
+    if (type == ActionSheetType.success) {
+      widget.success(_index);
+    } else {
+      widget.fail();
+    }
     _index = null;
-    _controller.reverse();
+    _controller.reverse().then((value) {
+      FluweRouter.navigateBack();
+    });
   }
 
   // item click
   void itemClick(int index) {
     _index = index;
-    _controller.reverse();
+    // _controller.reverse();
+    close(type: ActionSheetType.success);
   }
 
   // 渲染title
   Widget renderTitle() {
     return SizedBox(
-        height: 50.0,
-        child: Align(
-            alignment: Alignment.center,
-            child: DefaultTextStyle(
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 17.0,
-                    fontWeight: FontWeight.w500),
-                child: toTextWidget(widget.title, 'title'))));
+      height: 50.0,
+      child: Align(
+        alignment: Alignment.center,
+        child: DefaultTextStyle(
+          style: TextStyle(
+              color: Colors.black, fontSize: 17.0, fontWeight: FontWeight.w500),
+          child: toTextWidget(widget.title, 'title'),
+        ),
+      ),
+    );
   }
 
   // 取消按钮
@@ -152,6 +177,10 @@ class ActionSheetWidgetState extends State<ActionSheetWidget>
     if (widget.title != null) {
       list.add(renderTitle());
       list.add(Divider(height: 1, color: Color(0xffd8d8d8)));
+    } else {
+      // list.add(SizedBox(
+      //   height: px(10),
+      // ));
     }
 
     // 选项
@@ -162,39 +191,46 @@ class ActionSheetWidgetState extends State<ActionSheetWidget>
       list.add(renderCancelButton());
     }
 
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (BuildContext context, Widget child) {
-        return Stack(
-          children: <Widget>[
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: Transform.translate(
-                offset: Offset(0, top == null ? 10000.0 : top.value),
-                child: DecoratedBox(
-                  key: _boxKey,
-                  decoration: BoxDecoration(color: Colors.white),
-                  child: Material(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(rpx(13)),
-                        topRight: Radius.circular(rpx(13)),
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: list,
+    return WillPopScope(
+      onWillPop: () async {
+        close();
+        return false;
+      },
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (BuildContext context, Widget child) {
+          return Stack(
+            children: <Widget>[
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(px(30)),
+                      topRight: Radius.circular(px(30))),
+                  child: Transform.translate(
+                    offset: Offset(0, top == null ? 10000.0 : top.value),
+                    child: DecoratedBox(
+                      key: _boxKey,
+                      decoration: BoxDecoration(color: Colors.white),
+                      child: Material(
+                        child: Container(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: list,
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            )
-          ],
-        );
-      },
+              )
+            ],
+          );
+        },
+      ),
     );
   }
 }
@@ -227,26 +263,27 @@ List<Widget> initChilder(
       list.add(Divider(height: 1, color: borderColor));
     }
 
-    list.add(InkWell(
+    list.add(
+      InkWell(
         onTap: () {
           onChange(index);
         },
         child: DecoratedBox(
-            decoration: BoxDecoration(),
-            child: Align(
-                alignment: align,
-                child: SizedBox(
-                    child: Padding(
-                        padding: EdgeInsets.only(
-                            top: _topPadding,
-                            right: _leftPadding,
-                            bottom: _topPadding,
-                            left: _leftPadding),
-                        child: DefaultTextStyle(
-                            style:
-                                TextStyle(fontSize: 16.0, color: Colors.black),
-                            child: toTextWidget(
-                                childer[index].label, 'childer中的值'))))))));
+          decoration: BoxDecoration(),
+          child: Align(
+            alignment: align,
+            child: Container(
+              alignment: Alignment.center,
+              height: px(100),
+              child: DefaultTextStyle(
+                style: TextStyle(fontSize: px(30), color: Colors.black),
+                child: toTextWidget(childer[index].label, 'childer中的值'),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   return list;

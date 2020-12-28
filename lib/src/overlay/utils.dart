@@ -40,7 +40,7 @@ createOverlayEntry(
   if (hasWillPop == false) {
     overlayEntry = new OverlayEntry(builder: (context) {
       return DefaultTextStyle(
-          style: Theme.of(context).textTheme.body1, child: child);
+          style: Theme.of(context).textTheme.bodyText1, child: child);
     });
     overlayCurrent.insert(overlayEntry);
 
@@ -137,3 +137,5 @@ class FluweDialogRoute<T> extends PopupRoute<T> {
     return _transitionBuilder(context, animation, secondaryAnimation, child);
   }
 }
+
+// 全局context操作overlay
